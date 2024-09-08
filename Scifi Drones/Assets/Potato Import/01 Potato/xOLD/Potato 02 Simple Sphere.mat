@@ -1,0 +1,105 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Potato 02 Simple Sphere
+  m_Shader: {fileID: 4800000, guid: 37d20f105797c0649bc53184c84c6931, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords:
+  - _RECEIVESHADOWS_OFF
+  - _RECEIVE_SHADOWS_OFF
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: _FusionJitterFrequencyVariance
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - unity_Lightmaps:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_LightmapsInd:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_ShadowMasks:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _AlphaCutoff: 0.5
+    - _Collection: 1
+    - _CollectionStagger: 0.907
+    - _CollectionTime: 0
+    - _DelayCatchUpTime: 0.021
+    - _ExplosionCount: 4.02
+    - _ExplosionRadius: 1.1
+    - _ExplosionRotationSpeed: 0.79
+    - _ExplosionTime: 0.077
+    - _Float1: 0.14
+    - _Float2: 0.99
+    - _Float3: 0.05
+    - _Fusion: 0
+    - _FusionAxisColor_MaxDistance: 1.04
+    - _FusionAxisColor_MinDistance: 0.41
+    - _FusionJitterFrequency: 1
+    - _FusionJitterFrequencyVariance: 1.09
+    - _FusionJitterStrength: 0.04
+    - _FusionMulti: 1
+    - _FusionPointOnAxisOffset: 0.157
+    - _FusionPointRingOffsetStrength: 0.552
+    - _FusionPointRingOffsetVariance: 0.5904858
+    - _FusionRotationStrength: 0
+    - _MaxFusionExpansion: 0
+    - _MoveToFusionAxisEarly: 0
+    - _MoveToFusionPoint: 0
+    - _MoveToFusionPoint_Variance: 0
+    - _OffsetFusionAxisStrength: 0.82130146
+    - _OffsetFusionAxisVariance: 0
+    - _ParticleScale: 0.022
+    - _Progress: 0.27774516
+    - _ProgressDelay_Min: 0.115
+    - _ProgressDelay_Variance: 1
+    - _QueueControl: 0
+    - _QueueOffset: 0
+    - _ReceiveShadows: 0
+    - _RotateX_Speed: 0
+    - _RotateX_Variance: 1.2
+    - _RotateY_Speed: 36
+    - _RotateY_Variance: 1.58
+    - _RotateZ_Speed: 64
+    - _RotateZ_Variance: 1.38
+    - _Spawn: 1
+    - _SpawnStagger: 0.964
+    - _StartCollectionAt: 0
+    - _TestExplosion: 1
+    - _Transformation: 1
+    - _TransformationStagger: 0.963
+    - _UseTime: 1
+    m_Colors:
+    - _CollectionPoint: {r: 0.50740594, g: 2.9167795, b: 1.1400868, a: 0}
+    - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
+    - _FusionAxisColor: {r: 10.27479, g: 0, b: 14.259479, a: 0}
+    - _FusionDirection: {r: 0, g: 0, b: 0, a: 0}
+    - _FusionPoint: {r: 0.84, g: 3.05188, b: 0.55583966, a: 0}
+    - _MainColor: {r: 9.983092, g: 0, b: 15.999998, a: 0}
+    - _RotateX_ProgressRange: {r: 0, g: 0.07, b: 5.75, a: 0}
+    - _RotateY_ProgressRange: {r: 0, g: 0.7, b: 19.22, a: 0}
+    - _RotateZ_ProgressRange: {r: 0, g: 0.23, b: 206.1, a: 0}
+    - _TesstAxis: {r: 1.01, g: 0.6, b: 0, a: 0}
+    - _TransformationPosition: {r: 0.50740594, g: 2.6919694, b: 0.092333615, a: 0}
+    - _Vector1: {r: 0, g: 0, b: 0, a: 0}
+    - _Vector2: {r: 0.28, g: 0.09, b: 0.4, a: 0}
+  m_BuildTextureStacks: []

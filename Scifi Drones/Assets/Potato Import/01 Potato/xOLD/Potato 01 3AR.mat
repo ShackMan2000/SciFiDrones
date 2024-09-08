@@ -1,0 +1,172 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Potato 01 3AR
+  m_Shader: {fileID: 4800000, guid: 317412b6e95d2de40b964bf40f45188f, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords:
+  - _RECEIVESHADOWS_OFF
+  - _RECEIVE_SHADOWS_OFF
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 1
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _TextureSample0:
+        m_Texture: {fileID: 2800000, guid: 9fc8d3b6440c15747926fc16c8fff0d7, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_Lightmaps:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_LightmapsInd:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_ShadowMasks:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _AlphaCutoff: 0.5
+    - _Collection: 0
+    - _CollectionJump: 2.73
+    - _CollectionStagger: 1
+    - _DelayCatchUp: 0.201
+    - _DelayCatchUpSpeed: 0.063
+    - _DelayCatchUpTime: 0.024
+    - _DistanceForCenterColorr: 0.57
+    - _EffectDuration: 0.536
+    - _EndWaveScale: 0
+    - _EndWaveScrollSpeed: 0
+    - _Float1: 0
+    - _Float2: 0
+    - _Float3: 0
+    - _Float4: 0
+    - _Float5: 0
+    - _Float6: 39
+    - _Float7: 10
+    - _Float8: 0.347
+    - _Float9: 0.282
+    - _Fusion: 0.322
+    - _FusionAxisColor_MaxDistance: 1.04
+    - _FusionAxisColor_MinDistance: 0.41
+    - _FusionColorRange: 0.45
+    - _FusionColorRangeFallOff: 0.23
+    - _FusionRotationAdvance: 0.585
+    - _FusionRotationSpeed: 0
+    - _FusionRotationSpeed1: 60
+    - _FusionRotationStrength: 1
+    - _FusionRotationVariance: 0
+    - _FusionRotationVariance1: 7.06
+    - _FusionStagger: 0.727
+    - _FusionStaggeredTime: 1
+    - _JitterScale: 7.68
+    - _JitterScrollSpeed: 0.4
+    - _JitterStrength: 0
+    - _JitterStrengthMultiEndOfFusion: 1.5
+    - _JitterToFusionPointScale: 4.17
+    - _JitterToFusionPointSpeed: 0
+    - _JitterToFusionPointStrength: 1
+    - _Master: 0
+    - _MasterStagger: 0.479
+    - _MasterStaggeredTime: 1
+    - _MoveToFusionAxisEarly: 0.801
+    - _MoveToFusionPoint: 1
+    - _MoveToFusionPoint_Variance: 1.07
+    - _OffsetFromFusionAxisStrength: 0
+    - _OffsetFromFusionAxisVariance: 1.1
+    - _OffsetFromFusionPointStrength: 0.34034908
+    - _OffsetFromFusionPointVariation: 0
+    - _OffsetFusionAxisStrength: 0.45742705
+    - _OffsetFusionAxisVariance: 0.44
+    - _ParticleScale: 0.058
+    - _ParticleScale1: 0.3
+    - _PerfectCircleAmplitude: 200
+    - _PerfectCircleStrength: 0
+    - _Primary: 1
+    - _Progress: 0.38675553
+    - _ProgressDelay: 0.629
+    - _ProgressDelay_Min: 0.135
+    - _ProgressDelay_Variance: 0.88
+    - _QueueControl: 0
+    - _QueueOffset: 0
+    - _ReceiveShadows: 0
+    - _RemoveStaggerBoost: 0.65
+    - _RotateAroundClosestAxisPointDelayed: 0.851
+    - _RotateAroundClosestAxisPointStrength: 0
+    - _RotateAroundFusionX: 0.002494812
+    - _RotateAroundFusionX1: 0.38
+    - _RotateAroundFusionY: 0.009098172
+    - _RotateAroundFusionY1: 0
+    - _RotateAroundFusionZ: 0.9937668
+    - _RotateAroundFusionZ1: 0
+    - _RotateXYAroundClosestAxisPointDelayed: 0.404
+    - _RotateX_Speed: 0
+    - _RotateX_Variance: 0
+    - _RotateX_variance: 10
+    - _RotateY_Speed: 64
+    - _RotateY_Variance: 3.82
+    - _RotateZ_Speed: 280
+    - _RotateZ_Variance: 0
+    - _RotationVariance: 0
+    - _Scale: 0.06
+    - _Secondary: 1
+    - _Spread: 1
+    - _Stagger: 0.742
+    - _StartWaveScale: 2.12
+    - _StartWaveScrollSpeed: 0.46
+    - _Transformation: 1
+    - _UseTime: 0
+    - _addcross: -0.01
+    - _shart: 0.34
+    - _x: 0
+    - _y: 0
+    - _z: 0
+    m_Colors:
+    - _CenterColor: {r: 0, g: 2.7680175, b: 18.539957, a: 0}
+    - _CollectionCenter: {r: -16, g: 2.05, b: 1.85, a: 0}
+    - _CollectionPoint: {r: 0.007405923, g: 1.8518797, b: 2.5327513, a: 0}
+    - _CollectionPoint1: {r: 0, g: 0, b: 0, a: 0}
+    - _Color: {r: 0, g: 4.9199, b: 34.80374, a: 0}
+    - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
+    - _EndPositionVariance: {r: 0, g: 0, b: 0, a: 0}
+    - _EndRotation: {r: 0, g: 0, b: 0, a: 0}
+    - _EndWaveStrengthX: {r: 0, g: 0, b: 0, a: 0}
+    - _EndWaveStrengthY: {r: 1, g: 0, b: 0, a: 0}
+    - _EndWaveStrengthZ: {r: 0, g: 0, b: 0, a: 0}
+    - _FusionAxis: {r: -9.335356e-17, g: 0.00000023841858, b: -1.0000001, a: 0}
+    - _FusionAxisColor: {r: 0, g: 29.771149, b: 128, a: 0}
+    - _FusionCenter: {r: -20, g: 3.42, b: 0, a: 0}
+    - _FusionCenter1: {r: 1, g: 0, b: 0, a: 0}
+    - _FusionDirection: {r: 0, g: 0, b: 1, a: 0}
+    - _FusionPoint: {r: 0.007405923, g: 1.8518797, b: 1.1267513, a: 0}
+    - _FusionRotation: {r: 0, g: 0, b: 0, a: 0}
+    - _MainColor: {r: 0, g: 0.9284637, b: 6.1150684, a: 0}
+    - _RotateX_ProgressRange: {r: 0, g: 0.07, b: 5.75, a: 0}
+    - _RotateY_ProgressRange: {r: 0, g: 0.7, b: 19.22, a: 0}
+    - _RotateZ_ProgressRange: {r: 0, g: 0.23, b: 206.1, a: 0}
+    - _StartPositionVariance: {r: 0, g: 0, b: 0, a: 0}
+    - _StartRotation: {r: 0, g: 0, b: 0, a: 0}
+    - _StartWaveStrengthX: {r: -0.2, g: 0.1, b: 0, a: 0}
+    - _StartWaveStrengthY: {r: -0.2, g: 0.2, b: 0, a: 0}
+    - _StartWaveStrengthZ: {r: -0.2, g: 0.2, b: 0, a: 0}
+    - _TestWorldPosition: {r: 5, g: 0, b: 0, a: 0}
+    - _Vector0: {r: -8.08, g: 41.9, b: 0, a: 0}
+    - _Vector1: {r: 10, g: 10, b: 0, a: 0}
+  m_BuildTextureStacks: []

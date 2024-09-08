@@ -1,0 +1,85 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 092fccf72be348d4be85921996303e0d, type: 3}
+  m_Name: Potato 03 VFX Fusion
+  m_EditorClassIdentifier: 
+  Material: {fileID: 2100000, guid: 32ecfcf725ad0a84c89a2c8cb6d57702, type: 2}
+  Stages:
+  - Stage: {fileID: 11400000, guid: 813a4db1c03e1c4419893a8bbe4a59f7, type: 2}
+    Progress: 0.44056356
+    Values:
+    - Name: _Transformation
+      IsActive: 1
+      MinValue: 0
+      MaxValue: 1
+      IsAccumalative: 0
+      curve:
+        serializedVersion: 2
+        m_Curve:
+        - serializedVersion: 3
+          time: 0
+          value: 0
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        - serializedVersion: 3
+          time: 1
+          value: 1
+          inSlope: 2
+          outSlope: 2
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+    updateOnEdit: 1
+  - Stage: {fileID: 11400000, guid: 17af730932fe8de41907665589b39d17, type: 2}
+    Progress: 0
+    Values:
+    - Name: _Collection
+      IsActive: 1
+      MinValue: 0
+      MaxValue: 1
+      IsAccumalative: 0
+      curve:
+        serializedVersion: 2
+        m_Curve:
+        - serializedVersion: 3
+          time: 0
+          value: 0
+          inSlope: 1
+          outSlope: 1
+          tangentMode: 34
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        - serializedVersion: 3
+          time: 1
+          value: 1
+          inSlope: 1
+          outSlope: 1
+          tangentMode: 34
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+    updateOnEdit: 1
+  ParticlePrefab: {fileID: 3745023781877651465, guid: 1f0040037d04401448c4268ea402dab4,
+    type: 3}
+  validateNames: 1

@@ -70,3 +70,13 @@ crashlytics-build.properties
 # Temporary auto-generated Android Assets
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
+Scifi Drones/Assets/AmplifyShaderEditor/
+Scifi Drones/Library/
+Scifi Drones/Temp/
+Scifi Drones/obj/
+Scifi Drones/.idea/.idea.Scifi Drones/.idea/indexLayout.xml
+Scifi Drones/.idea/
+Scifi Drones/Assets/Settings/
+Scifi Drones/ProjectSettings/
+Scifi Drones/Logs/shadercompiler-UnityShaderCompiler.exe-7.log
+Scifi Drones/Logs/

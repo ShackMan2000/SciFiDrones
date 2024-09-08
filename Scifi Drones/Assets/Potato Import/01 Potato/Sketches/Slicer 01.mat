@@ -1,0 +1,77 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Slicer 01
+  m_Shader: {fileID: 4800000, guid: c1b90d9546b1ec44fa101be4bb29bc12, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - unity_Lightmaps:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_LightmapsInd:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_ShadowMasks:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _AfterBurnDistance: 0.371
+    - _AfterBurnDistance1: 0.937
+    - _AfterBurnStrength: 1
+    - _AlphaCutoff: 0.5
+    - _EndWaveScale: 0
+    - _EndWaveScrollSpeed: 0
+    - _Float3: 1
+    - _Primary: 1
+    - _QueueControl: 0
+    - _QueueOffset: 0
+    - _RotationVariance: 0
+    - _Scale: 1
+    - _Secondary: 1
+    - _Spread: 1
+    - _StartWaveScale: 0
+    - _StartWaveScrollSpeed: 0
+    - _XBurnRadius: 0.03
+    - _XSliceThickness: 0.1
+    - _XSliceThickness1: 0.2
+    m_Colors:
+    - _BurnColor: {r: 3.1949296, g: 0, b: 0.15747105, a: 0}
+    - _Color: {r: 0, g: 0, b: 0, a: 0}
+    - _Color1: {r: 0.2042542, g: 0.5284038, b: 0.9622642, a: 0}
+    - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
+    - _EndPositionVariance: {r: 0, g: 0, b: 0, a: 0}
+    - _EndRotation: {r: 0, g: 0, b: 0, a: 0}
+    - _EndWaveStrengthX: {r: 0, g: 0, b: 0, a: 0}
+    - _EndWaveStrengthY: {r: 1, g: 0, b: 0, a: 0}
+    - _EndWaveStrengthZ: {r: 0, g: 0, b: 0, a: 0}
+    - _StartPositionVariance: {r: 0, g: 0, b: 0, a: 0}
+    - _StartRotation: {r: 0, g: 0, b: 0, a: 0}
+    - _StartWaveStrengthX: {r: 0, g: 0, b: 0, a: 0}
+    - _StartWaveStrengthY: {r: 1, g: 0, b: 0, a: 0}
+    - _StartWaveStrengthZ: {r: 0, g: 0, b: 0, a: 0}
+    - _XSlicePosition: {r: 39.44, g: 0, b: 0, a: 0}
+    - _XSlicePosition1: {r: 39.58, g: 0, b: 0, a: 0}
+    - _XSlicePosition2: {r: 39.4, g: -0.09, b: 0, a: 0}
+  m_BuildTextureStacks: []

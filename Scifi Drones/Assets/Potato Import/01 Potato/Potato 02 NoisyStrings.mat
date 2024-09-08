@@ -1,0 +1,130 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Potato 02 NoisyStrings
+  m_Shader: {fileID: 4800000, guid: 60624219d48e8ae4c9a0c1fb19dbc4b2, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords:
+  - _RECEIVESHADOWS_OFF
+  - _RECEIVE_SHADOWS_OFF
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: _FusionJitterFrequencyVariance
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - unity_Lightmaps:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_LightmapsInd:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_ShadowMasks:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _AlphaCutoff: 0.5
+    - _Collection: 1
+    - _CollectionStagger: 0.907
+    - _CollectionTime: 0
+    - _ConstantZRotation: 8.96
+    - _DelayCatchUpTime: 0.021
+    - _ExplosionCount: 4.02
+    - _ExplosionRadius: 1.1
+    - _ExplosionRotationSpeed: 0.79
+    - _ExplosionTime: 0.077
+    - _ExplosionTimeOnSmack: 0.476
+    - _FinalRotationX: 4.1
+    - _FinalRotationZ: 3.7
+    - _Float0: 0
+    - _Float1: 8.8
+    - _Float2: 0.99
+    - _Float3: 0.05
+    - _Fusion: 0
+    - _FusionAxisColor_MaxDistance: 1.04
+    - _FusionAxisColor_MinDistance: 0.41
+    - _FusionJitterFrequency: 1
+    - _FusionJitterFrequencyVariance: 1.09
+    - _FusionJitterStrength: 0.04
+    - _FusionMulti: 1
+    - _FusionPointOnAxisOffset: 0.157
+    - _FusionPointRingOffsetStrength: 0.552
+    - _FusionPointRingOffsetVariance: 0.5904858
+    - _FusionRotationStrength: 0
+    - _MaxFusionExpansion: 0
+    - _MaxLerpToFinalRotation: 1
+    - _MaxUnravelTime: 1
+    - _MoveToFusionAxisEarly: 0
+    - _MoveToFusionPoint: 0
+    - _MoveToFusionPoint_Variance: 0
+    - _MoveToSphereNoiseScale: 7.1
+    - _MoveToSphereTime: 0.232
+    - _OffsetFusionAxisStrength: 0.82130146
+    - _OffsetFusionAxisVariance: 0
+    - _ParticleScale: 0.023
+    - _PositionNoise: 0
+    - _PositionNoise1: 0
+    - _Progress: 0.27774516
+    - _ProgressDelay_Min: 0.115
+    - _ProgressDelay_Variance: 1
+    - _QueueControl: 0
+    - _QueueOffset: 0
+    - _Radius: 0.67
+    - _RadiusVar: 40
+    - _ReceiveShadows: 0
+    - _RotateX: 33.8
+    - _RotateX_Speed: 0
+    - _RotateX_Variance: 1.2
+    - _RotateY: 144.4
+    - _RotateY_Speed: 36
+    - _RotateY_Variance: 1.58
+    - _RotateZ: -93.5
+    - _RotateZPreEntry: -32.9
+    - _RotateZ_Speed: 64
+    - _RotateZ_Variance: 1.38
+    - _SmackCount: 8
+    - _SmackRadius: 0.87
+    - _Spawn: 1
+    - _SpawnStagger: 0.964
+    - _StartCollectionAt: 0
+    - _StartLerpingToFinalRotation: 0.446
+    - _TestExplosion: 1
+    - _Transformation: 1
+    - _TransformationStagger: 0.038
+    - _UnravelRotation: 0
+    - _UseTime: 1
+    m_Colors:
+    - _CollectionPoint: {r: 0.50740594, g: 2.941803, b: 1.2810086, a: 0}
+    - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
+    - _FusionAxisColor: {r: 0, g: 2.1652234, b: 14.259479, a: 0}
+    - _FusionDirection: {r: 0, g: 0, b: 0, a: 0}
+    - _FusionPoint: {r: 0.84, g: 3.05188, b: 0.55583966, a: 0}
+    - _MainColor: {r: 4.1379037, g: 0, b: 23.245283, a: 0}
+    - _MoveToSphereNoise: {r: 0, g: 0, b: 0, a: 0}
+    - _RotateX_ProgressRange: {r: 0, g: 0.07, b: 5.75, a: 0}
+    - _RotateY_ProgressRange: {r: 0, g: 0.7, b: 19.22, a: 0}
+    - _RotateZ_ProgressRange: {r: 0, g: 0.23, b: 206.1, a: 0}
+    - _SmackColor: {r: 1074.618, g: 311.4916, b: 16.220713, a: 0}
+    - _StaggerRange: {r: 0, g: 0.02, b: 0, a: 0}
+    - _TesstAxis: {r: 1.01, g: 0.6, b: 0, a: 0}
+    - _TransformationPosition: {r: 0.50740594, g: 2.5691495, b: 0.27629185, a: 0}
+    - _Vector0: {r: 35.9, g: 84.8, b: 96, a: 0}
+    - _Vector1: {r: 0, g: 0, b: 0, a: 0}
+    - _Vector2: {r: 0.28, g: 0.09, b: 0.4, a: 0}
+  m_BuildTextureStacks: []

@@ -1,0 +1,288 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 092fccf72be348d4be85921996303e0d, type: 3}
+  m_Name: Potato 05 VFXS SingleRing 4
+  m_EditorClassIdentifier: 
+  Material: {fileID: 2100000, guid: d86c85a3015df1d42a6eef3125bfbe33, type: 2}
+  masterProgress: 0.9589143
+  masterCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0.18749847
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  ParticlePrefab: {fileID: 3745023781877651465, guid: 1f0040037d04401448c4268ea402dab4,
+    type: 3}
+  updateOnEdit: 1
+  validateNames: 1
+  totalDurationInSeconds: 1
+  animatedValues:
+  - Name: _Progress
+    IsActive: 1
+    StartValue: 0.1
+    EndValue: 1
+    IsAccumalative: 0
+    curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: 1
+        outSlope: 1
+        tangentMode: 34
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 1
+        value: 1
+        inSlope: 1
+        outSlope: 1
+        tangentMode: 34
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+  - Name: _FusionRotationStrength
+    IsActive: 1
+    StartValue: 0
+    EndValue: 1
+    IsAccumalative: 0
+    curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0.12926102
+        value: 0.0009613037
+        inSlope: 3.2044694
+        outSlope: 3.2044694
+        tangentMode: 0
+        weightedMode: 2
+        inWeight: 0
+        outWeight: 0.5136045
+      - serializedVersion: 3
+        time: 1
+        value: 1
+        inSlope: 2
+        outSlope: 2
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+  - Name: _MoveToFusionPoint
+    IsActive: 1
+    StartValue: 0
+    EndValue: 1
+    IsAccumalative: 0
+    curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: 1
+        outSlope: 1
+        tangentMode: 34
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 1
+        value: 1
+        inSlope: 1
+        outSlope: 1
+        tangentMode: 34
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+  - Name: _OffsetFromFusionPointStrength
+    IsActive: 1
+    StartValue: 0.06
+    EndValue: 0.83
+    IsAccumalative: 0
+    curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0.33687592
+        value: 0.004272461
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 0.510003
+        value: 0.61979055
+        inSlope: 0.2879451
+        outSlope: 0.2879451
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.60117143
+      - serializedVersion: 3
+        time: 0.9625
+        value: 0.36408973
+        inSlope: -0.5403157
+        outSlope: -0.5403157
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.6219638
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+  - Name: _JitterToFusionPointStrength
+    IsActive: 1
+    StartValue: 0
+    EndValue: 1
+    IsAccumalative: 0
+    curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0.5474167
+        value: 0.012161255
+        inSlope: 2.1826673
+        outSlope: 2.1826673
+        tangentMode: 34
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 1
+        value: 1
+        inSlope: 2.1826673
+        outSlope: 2.1826673
+        tangentMode: 34
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+  - Name: _RotateAroundFusionX
+    IsActive: 1
+    StartValue: 0
+    EndValue: 1
+    IsAccumalative: 0
+    curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: -0.006248474
+        value: 0.9725647
+        inSlope: -1.6689506
+        outSlope: -1.6689506
+        tangentMode: 34
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.57499695
+        value: 0.002494812
+        inSlope: -1.6689506
+        outSlope: -1.6689506
+        tangentMode: 34
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+  - Name: _RotateAroundFusionY
+    IsActive: 1
+    StartValue: 0
+    EndValue: 1
+    IsAccumalative: 0
+    curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0.012500763
+        value: 0.991272
+        inSlope: -1.5730392
+        outSlope: -1.5730392
+        tangentMode: 34
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.6368805
+        value: 0.009098172
+        inSlope: -1.5730392
+        outSlope: -1.5730392
+        tangentMode: 34
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+  - Name: _RotateAroundFusionZ
+    IsActive: 1
+    StartValue: 0
+    EndValue: 1
+    IsAccumalative: 0
+    curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: 1.432444
+        outSlope: 1.432444
+        tangentMode: 34
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.6937561
+        value: 0.9937668
+        inSlope: 1.432444
+        outSlope: 1.432444
+        tangentMode: 34
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+  IconColor: {r: 0, g: 0, b: 0, a: 0}

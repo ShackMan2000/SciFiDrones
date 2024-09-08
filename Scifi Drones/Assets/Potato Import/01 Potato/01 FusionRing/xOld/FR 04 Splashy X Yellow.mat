@@ -1,0 +1,175 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: FR 04 Splashy X Yellow
+  m_Shader: {fileID: 4800000, guid: bab5097918feaf64db3b7c471ce885b0, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords:
+  - _RECEIVESHADOWS_OFF
+  - _RECEIVE_SHADOWS_OFF
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _BackTexture:
+        m_Texture: {fileID: 2800000, guid: 070898c767cc4ce45b806ba2c181121e, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainTexture:
+        m_Texture: {fileID: 2800000, guid: eaf8cd375b027494cbaec832169f911b, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _RingMainTexture:
+        m_Texture: {fileID: 2800000, guid: a726b0bbdf745794da7f1630fc6afcae, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _RingTexture:
+        m_Texture: {fileID: 2800000, guid: 88a5071ac9cd60d4bb8d3f80c3db3baa, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SquareMainTexture:
+        m_Texture: {fileID: 2800000, guid: ec768564c8a6b2542a54931c90c15cce, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _TextureSample0:
+        m_Texture: {fileID: 2800000, guid: 817030d8f1b1ab949b0a3eaa3ea351db, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _TextureSample1:
+        m_Texture: {fileID: 2800000, guid: 20cf79d25b68e9b4bae3901a16ff9e73, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _TextureSample2:
+        m_Texture: {fileID: 2800000, guid: 14df06121b8b2774183572049eb45bb6, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 1, y: 1}
+    - _TextureSample3:
+        m_Texture: {fileID: 2800000, guid: 153b4bd5bee584b429271b368855e05b, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _TextureSample4:
+        m_Texture: {fileID: 2800000, guid: 5cb2ad9f5b5cd724286ca2f88efbbc11, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _TextureSample5:
+        m_Texture: {fileID: 2800000, guid: eae4dd278bd9d034f8384d4f5b64bef5, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _TextureSample6:
+        m_Texture: {fileID: 2800000, guid: d1a7d493a356bc443b86b420ff1dd0fc, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _texcoord:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _texcoord3:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_Lightmaps:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_LightmapsInd:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_ShadowMasks:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _AddRingTextureColor: 1
+    - _AdjustGradientInside: 0
+    - _AdjustGradientOutside: 1
+    - _AlphaCutoff: 0.5
+    - _BackGradientSquash: 0
+    - _BackMoveToCenterSpeed: 0
+    - _BackOffsetGradient: 0
+    - _BackRotationSpeed: 0
+    - _BoostForSine: 0
+    - _Float0: 0
+    - _Float1: 11.7
+    - _Float2: 0.96
+    - _GradientSquash: 1.6
+    - _Int0: 0
+    - _MainMoveToCenterSpeed: 0.686
+    - _MainRotationSpeed: 4.45
+    - _MethodIndex: 0
+    - _MoveToCenterSpeed: 0
+    - _OffsetGradient: 2
+    - _QueueControl: 0
+    - _QueueOffset: 0
+    - _RPS: 0.52
+    - _RadialDistortionWaveCount: 0
+    - _RadiusAbsolute: 0.7
+    - _ReceiveShadows: 0
+    - _RiMaTxScale: 2.07
+    - _RiMaTxScaleEndg: 1.09
+    - _RiMaTxScaleStart: 2.61
+    - _RiMaTxWobbleScale: 4.9
+    - _RiMaTxWobbleStrength: 0.022
+    - _RiMaWobbleSpeed: 0.67
+    - _RingMainTexRPS: -0.05
+    - _RingMainTexScale: 1.05
+    - _RingMainTexTotalRotation: 0.6006417
+    - _RotationSpeed: 0
+    - _ShowMaster: 0.398
+    - _Speed: 4.84
+    - _SqMaTxGradientSquash: 0.001
+    - _SqMaTxGradientSquashEnd: 1.42
+    - _SqMaTxGradientSquashStart: 0
+    - _SqMaTxMoveToCenterSpeed: 0
+    - _SqMaTxOffsetGradient: 0.6
+    - _SqMaTxOffsetGradientEnd: 1.97
+    - _SqMaTxOffsetGradientStart: 1.67
+    - _SqMaTxRotationSpeed: 0
+    - _SqMaTxTotalMoveToCenter: 4.1204004
+    - _SqMaTxTotalRotation: 19.160463
+    - _SquareMainTexGradientSquash: 0.61
+    - _SquareMainTexOffsetGradient: 3.94
+    - _Test: 0.41
+    - _Throttle: 1.0006279
+    - _TotalRadius: 0.71
+    - _UseTime: 1
+    - _WobbleScale: 2.54
+    - _WobbleSpeed: -1
+    - _gradientSCale: 0.78
+    - _offset: 7.89
+    - _testoffsetstrength: 0.014
+    - _waveCount: 14
+    - _wobbleSpeed: 0
+    m_Colors:
+    - _BackGradientInside: {r: 0, g: 0, b: 0, a: 0}
+    - _BackGradientOutside: {r: 0, g: 0, b: 0, a: 0}
+    - _Color0: {r: 0, g: 0, b: 0, a: 0}
+    - _Color1: {r: 0, g: 0, b: 0, a: 0}
+    - _Color2: {r: 0, g: 0, b: 0, a: 0}
+    - _Color3: {r: 1, g: 1, b: 1, a: 0}
+    - _Color4: {r: 1.9144524, g: 1.9144524, b: 1.9144524, a: 0}
+    - _Color5: {r: 0, g: 0, b: 0, a: 0}
+    - _Color6: {r: 0, g: 1, b: 0.15524483, a: 0}
+    - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
+    - _MainGradientInside: {r: 0, g: 0, b: 0, a: 0}
+    - _MainGradientOutside: {r: 0.9999999, g: 0.90548164, b: 0, a: 0}
+    - _MainTexTiling: {r: 1, g: 1, b: 0, a: 0}
+    - _RingMainTexColor: {r: 1.9999998, g: 1.3656439, b: 0, a: 0}
+    - _SquareMainTexTiling: {r: 1, g: 1, b: 0, a: 0}
+    - _Vector0: {r: 0, g: 0, b: 0, a: 0}
+  m_BuildTextureStacks: []
