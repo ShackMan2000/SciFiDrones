@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Thruster Core Tiled Blue
-  m_Shader: {fileID: 4800000, guid: c8e060d846345b341bb2bfa4119674b1, type: 3}
+  m_Name: TCC Green Lemon 3
+  m_Shader: {fileID: 4800000, guid: 5f843b37c74552144a9acde5dbf4d4e5, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
@@ -26,7 +26,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _BackTexture:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: def94179b19c95740a14a81e3096e40d, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _RadialSwingTex:
@@ -46,11 +46,15 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _RingTexture:
-        m_Texture: {fileID: 2800000, guid: 3cd6781ec6bc08c42a740cb96477875a, type: 3}
+        m_Texture: {fileID: 2800000, guid: bffd641d10ff7eb4da9af49e39f00419, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _RingTexture1:
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _RingWobbleTex:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: d3c3fa9561ce00f4c86fd055cffa9045, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SquareMainTexture:
@@ -66,6 +70,10 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _texcoord:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _texcoord2:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -91,16 +99,20 @@ Material:
     - _BackTexFixedRotation: 0
     - _BackTexMoveToCenterSpeed: 0.57
     - _BackTexRotate: 1
-    - _BackTexRotationSpeed: 0.23
+    - _BackTexRotationSpeed: 9.73
     - _BackTexScale: 1
+    - _ColorLerpEndRadius: 0.3752641
+    - _ColorLerpStartRadius: 0
     - _Color_1_Start: 0.034
     - _Color_2_End: 0.816
-    - _Color_2_Start: 0.702
-    - _Color_3_Full: 1
-    - _Color_3_Start: 0.663
+    - _Color_2_Start: 0
+    - _Color_3_Full: 0.914
+    - _Color_3_Start: 0.577
     - _DynamicBackTecRotationSpeed: 1
-    - _Float0: 1.5
+    - _Float0: 0.2
     - _Float1: 0
+    - _GradientColorEndRadius: 0.782
+    - _GradientColorStartRadius: 0.573
     - _Int0: 0
     - _QueueControl: 0
     - _QueueOffset: 0
@@ -127,24 +139,30 @@ Material:
     - _RiMaWobbleSpeed: 0
     - _RingMainTexRPS: 0.12
     - _RingMainTexTotalRotation: 0.05
-    - _RingSwingColorRangeBoost: 0.24
-    - _RingSwingExtraWobble: 0.143
-    - _RingSwingSpeed: 0
+    - _RingSwingColorRangeBoost: 0.77
+    - _RingSwingExtraWobble: 1
+    - _RingSwingSpeed: 1
     - _RingSwingStrength: 1
-    - _RingTexRotation: 1.2
-    - _RingTexScale: 0.77
-    - _RingWobbleOverlayFrequency: 0.99
+    - _RingTexRotation: 2.09
+    - _RingTexScale: 1
+    - _RingWobbleOverlayFrequency: 1.09
     - _RingWobbleOverlayOffset: 0
-    - _RingWobbleOverlayStrength: 0.571
+    - _RingWobbleOverlayStrength: 1.274
     - _RingWobbleSpeed: 0.279
-    - _RingWobbleStrength: 0.184
-    - _ShowMaster: 0.54691905
+    - _RingWobbleSpeedTexX: 0.33
+    - _RingWobbleSpeedTexY: 0.31
+    - _RingWobbleStrength: 1
+    - _ShowMaster: 0.154
     - _ShowMaster1: 1
     - _SqMaTxGradientSquash: 0.002755
     - _SqMaTxGradientSquash1: 0
     - _SqMaTxMoveToCenterSpeed: 0.0162
     - _SqMaTxOffsetGradient: 0.60675
     - _SqMaTxRotationSpeed: 0.87186235
+    - _TextureAlphaEnd: 0.3
+    - _TextureAlphaStart: 0.07
+    - _TextureColorEnd: 0.49
+    - _TextureColorStart: 0.16
     - _Throttle: 0
     - _UseTime: 1
     - _WobbleStrengthRadiusMultiFrequency: 2.06
@@ -154,16 +172,25 @@ Material:
     m_Colors:
     - _BackTexValueRemap: {r: 0, g: 3.5, b: 0, a: 0}
     - _Color0: {r: 5.5849056, g: 3.7063208, b: 0.7165541, a: 0}
-    - _Color3: {r: 0, g: 4.04979, b: 55.630684, a: 0}
+    - _Color3: {r: 2.5653262, g: 11.769961, b: 0, a: 0}
     - _Color_1: {r: 0, g: 0, b: 0, a: 0}
-    - _Color_2: {r: 0, g: 1.1910591, b: 16, a: 0}
+    - _Color_2: {r: 0.062418763, g: 1.2018834, b: 0, a: 0}
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
+    - _GradientInnerColor: {r: 0, g: 0.6285994, b: 5.992157, a: 0}
+    - _GradientOuterColor: {r: 0, g: 0.74581945, b: 11.984313, a: 0}
+    - _InnerColor: {r: 0, g: 0, b: 0, a: 0}
     - _MainGradientInside: {r: 0, g: 0, b: 0, a: 0}
     - _MainGradientOutside: {r: 0, g: 0, b: 0, a: 0}
+    - _OuterColor: {r: 0, g: 0, b: 0, a: 0}
     - _OuterTexValueRemap: {r: -0.18, g: 0.94, b: 0, a: 0}
     - _RingMainTexColor: {r: 0, g: 0, b: 0, a: 0}
     - _RingTexFixedOffset: {r: 0, g: 0, b: 0, a: 0}
-    - _RingTexValueRemap: {r: -0.53, g: 0.5, b: 0, a: 0}
+    - _RingTexValueRemap: {r: 0.2, g: 1.48, b: 0, a: 0}
     - _SquareMainTexTiling: {r: 3, g: 1, b: 0, a: 0}
+    - _TextureColorA: {r: 0, g: 1.4378535, b: 13.76636, a: 0}
+    - _TextureColorB: {r: 0, g: 3.8024445, b: 32, a: 0}
+    - _TextureColorEnd: {r: 0.189962, g: 14.148496, b: 0, a: 0.65882355}
+    - _TextureColorStart: {r: 0, g: 0.5019608, b: 0.097585045, a: 0}
+    - _WobbleRange: {r: -0.35, g: -0.01, b: 0, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

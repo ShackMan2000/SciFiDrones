@@ -4,25 +4,15 @@ Shader "ThrusterCoreTiled"
 {
 	Properties
 	{
-		[HideInInspector] _EmissionColor("Emission Color", Color) = (1,1,1,1)
 		[HideInInspector] _AlphaCutoff("Alpha Cutoff ", Range(0, 1)) = 0.5
-		_Float0("Float 0", Range( 0 , 1)) = 1
-		_ShowMaster("ShowMaster", Range( 0 , 1)) = 1
-		_DynamicBackTecRotationSpeed("DynamicBackTecRotationSpeed", Int) = 1
-		[HDR]_Color_1("Color_1", Color) = (0,0,0,0)
-		[HDR]_Color_2("Color_2", Color) = (0,0,0,0)
-		[HDR]_Color3("Color 3", Color) = (0,0,0,0)
-		_Color_2_Start("Color_2_Start", Range( 0 , 1)) = 0.3752641
-		_Color_3_Start("Color_3_Start", Range( 0 , 1)) = 0
-		_Color_3_Full("Color_3_Full", Range( 0 , 1)) = 0.3752641
+		[HideInInspector] _EmissionColor("Emission Color", Color) = (1,1,1,1)
+		[HDR]_TextureColorA("TextureColorA", Color) = (0,0,0,0)
+		[HDR]_TextureColorB("TextureColorB", Color) = (0,0,0,0)
 		_BackTexture("BackTexture", 2D) = "black" {}
 		_BackTexValueRemap("BackTexValueRemap", Vector) = (0,0,0,0)
 		_BackTexScale("BackTexScale", Float) = 1
-		_BackTexRotationSpeed("BackTexRotationSpeed", Float) = 0
-		_BackTexMoveToCenterSpeed("BackTexMoveToCenterSpeed", Float) = 0
-		_BackTexColorRangeOverlayStrength("BackTexColorRangeOverlayStrength", Range( 0 , 5)) = 0
-		_BackTexColorRangeOverlayOffset("BackTexColorRangeOverlayOffset", Range( 0 , 1)) = 0
-		_BackTexColorRangeOverlayFrequency("BackTexColorRangeOverlayFrequency", Range( 0 , 10)) = 0
+		_MoveSpeedY("MoveSpeedY", Range( -5 , 5)) = 0
+		_MoveSpeedX("MoveSpeedX", Range( -5 , 5)) = 0
 		_BackTexFixedRotation("BackTexFixedRotation", Range( 0 , 1)) = 0
 
 
@@ -52,7 +42,7 @@ Shader "ThrusterCoreTiled"
 
 		Tags { "RenderPipeline"="UniversalPipeline" "RenderType"="Transparent" "Queue"="Transparent" "UniversalMaterialType"="Unlit" }
 
-		Cull Back
+		Cull Off
 		AlphaToMask Off
 
 		
@@ -230,8 +220,7 @@ Shader "ThrusterCoreTiled"
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/LODCrossFade.hlsl"
             #endif
 
-			#define ASE_NEEDS_FRAG_POSITION
-
+			
 
 			struct Attributes
 			{
@@ -255,29 +244,18 @@ Shader "ThrusterCoreTiled"
 					float fogFactor : TEXCOORD3;
 				#endif
 				float4 ase_texcoord4 : TEXCOORD4;
-				float4 ase_texcoord5 : TEXCOORD5;
 				UNITY_VERTEX_INPUT_INSTANCE_ID
 				UNITY_VERTEX_OUTPUT_STEREO
 			};
 
 			CBUFFER_START(UnityPerMaterial)
-			float4 _Color3;
-			float4 _Color_2;
-			float4 _Color_1;
+			float4 _TextureColorA;
+			float4 _TextureColorB;
 			float2 _BackTexValueRemap;
-			float _Color_3_Full;
-			float _Color_3_Start;
-			float _Color_2_Start;
-			float _ShowMaster;
-			float _BackTexColorRangeOverlayFrequency;
-			float _BackTexRotationSpeed;
-			int _DynamicBackTecRotationSpeed;
-			float _BackTexScale;
 			float _BackTexFixedRotation;
-			float _BackTexColorRangeOverlayStrength;
-			float _BackTexColorRangeOverlayOffset;
-			float _BackTexMoveToCenterSpeed;
-			float _Float0;
+			float _BackTexScale;
+			float _MoveSpeedX;
+			float _MoveSpeedY;
 			#ifdef ASE_TESSELLATION
 				float _TessPhongStrength;
 				float _TessValue;
@@ -318,11 +296,10 @@ Shader "ThrusterCoreTiled"
 				UNITY_TRANSFER_INSTANCE_ID(input, output);
 				UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(output);
 
-				output.ase_texcoord4 = input.positionOS;
-				output.ase_texcoord5.xy = input.ase_texcoord1.xy;
+				output.ase_texcoord4.xy = input.ase_texcoord1.xy;
 				
 				//setting value to unused interpolator channels and avoid initialization warnings
-				output.ase_texcoord5.zw = 0;
+				output.ase_texcoord4.zw = 0;
 
 				#ifdef ASE_ABSOLUTE_VERTEX_POS
 					float3 defaultVertexValue = input.positionOS.xyz;
@@ -465,27 +442,18 @@ Shader "ThrusterCoreTiled"
 					#endif
 				#endif
 
-				float2 appendResult342 = (float2(input.ase_texcoord4.xyz.x , input.ase_texcoord4.xyz.z));
-				float Vertex_Distance_From_Center_Relative345 = ( length( appendResult342 ) / 0.7 );
-				float BackTexColorRangeOverlay516 = ( ( sin( ( ( ( Vertex_Distance_From_Center_Relative345 * _BackTexColorRangeOverlayFrequency ) + ( _BackTexColorRangeOverlayOffset * 2.0 ) ) * PI ) ) + 1.0 ) * 0.5 * _BackTexColorRangeOverlayStrength );
 				float2 temp_cast_0 = (_BackTexScale).xx;
-				float mulTime379 = _TimeParameters.x * (float)_DynamicBackTecRotationSpeed;
-				float2 appendResult377 = (float2(( ( mulTime379 * _BackTexRotationSpeed ) + _BackTexRotationSpeed ) , ( _BackTexMoveToCenterSpeed + ( _BackTexMoveToCenterSpeed * mulTime379 ) )));
-				float2 texCoord378 = input.ase_texcoord5.xy * temp_cast_0 + ( ( ( _BackTexScale * -0.5 ) + 0.5 ) + appendResult377 );
+				float2 appendResult377 = (float2(( _MoveSpeedX * _TimeParameters.x ) , ( _TimeParameters.x * _MoveSpeedY )));
+				float2 texCoord378 = input.ase_texcoord4.xy * temp_cast_0 + ( ( ( _BackTexScale * -0.5 ) + 0.5 ) + appendResult377 );
 				float3 rotatedValue580 = RotateAroundAxis( float3( 0.5,0.5,0.5 ), float3( texCoord378 ,  0.0 ), normalize( float3( 0,0,1 ) ), ( ( _BackTexFixedRotation * PI ) * 0.5 ) );
 				float4 tex2DNode38 = tex2D( _BackTexture, rotatedValue580.xy );
-				float BackTextureColorRange369 = saturate( (0.0 + (( ( tex2DNode38.r + tex2DNode38.g + tex2DNode38.b ) / 3.0 ) - _BackTexValueRemap.x) * (1.0 - 0.0) / (_BackTexValueRemap.y - _BackTexValueRemap.x)) );
-				float ColorRangeFinal543 = saturate( ( 0.0 + saturate( ( BackTexColorRangeOverlay516 * BackTextureColorRange369 ) ) ) );
-				float4 lerpResult547 = lerp( _Color_1 , _Color_2 , saturate( (0.0 + (ColorRangeFinal543 - _Color_2_Start) * (1.0 - 0.0) / (_Color_3_Start - _Color_2_Start)) ));
-				float4 lerpResult550 = lerp( _Color_2 , _Color3 , saturate( (0.0 + (ColorRangeFinal543 - _Color_3_Start) * (1.0 - 0.0) / (_Color_3_Full - _Color_3_Start)) ));
-				float4 temp_output_404_0 = ( ( ColorRangeFinal543 < _Color_2_Start ? _Color_1 : ( ColorRangeFinal543 < _Color_3_Start ? lerpResult547 : ( ColorRangeFinal543 < _Color_3_Full ? lerpResult550 : _Color3 ) ) ) * _ShowMaster );
-				
-				float dotResult590 = dot( temp_output_404_0 , float4( 1,1,1,0 ) );
+				float TextureValueRemaped369 = saturate( (0.0 + (( ( tex2DNode38.r + tex2DNode38.g + tex2DNode38.b ) / 3.0 ) - _BackTexValueRemap.x) * (1.0 - 0.0) / (_BackTexValueRemap.y - _BackTexValueRemap.x)) );
+				float4 lerpResult594 = lerp( _TextureColorA , _TextureColorB , TextureValueRemaped369);
 				
 				float3 BakedAlbedo = 0;
 				float3 BakedEmission = 0;
-				float3 Color = temp_output_404_0.rgb;
-				float Alpha = ( dotResult590 >= _Float0 ? 1.0 : 0.0 );
+				float3 Color = lerpResult594.rgb;
+				float Alpha = TextureValueRemaped369;
 				float AlphaClipThreshold = 0.5;
 				float AlphaClipThresholdShadow = 0.5;
 
@@ -553,8 +521,7 @@ Shader "ThrusterCoreTiled"
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/LODCrossFade.hlsl"
             #endif
 
-			#define ASE_NEEDS_FRAG_POSITION
-
+			
 
 			struct Attributes
 			{
@@ -574,29 +541,18 @@ Shader "ThrusterCoreTiled"
 					float4 shadowCoord : TEXCOORD1;
 				#endif
 				float4 ase_texcoord2 : TEXCOORD2;
-				float4 ase_texcoord3 : TEXCOORD3;
 				UNITY_VERTEX_INPUT_INSTANCE_ID
 				UNITY_VERTEX_OUTPUT_STEREO
 			};
 
 			CBUFFER_START(UnityPerMaterial)
-			float4 _Color3;
-			float4 _Color_2;
-			float4 _Color_1;
+			float4 _TextureColorA;
+			float4 _TextureColorB;
 			float2 _BackTexValueRemap;
-			float _Color_3_Full;
-			float _Color_3_Start;
-			float _Color_2_Start;
-			float _ShowMaster;
-			float _BackTexColorRangeOverlayFrequency;
-			float _BackTexRotationSpeed;
-			int _DynamicBackTecRotationSpeed;
-			float _BackTexScale;
 			float _BackTexFixedRotation;
-			float _BackTexColorRangeOverlayStrength;
-			float _BackTexColorRangeOverlayOffset;
-			float _BackTexMoveToCenterSpeed;
-			float _Float0;
+			float _BackTexScale;
+			float _MoveSpeedX;
+			float _MoveSpeedY;
 			#ifdef ASE_TESSELLATION
 				float _TessPhongStrength;
 				float _TessValue;
@@ -640,11 +596,10 @@ Shader "ThrusterCoreTiled"
 				UNITY_TRANSFER_INSTANCE_ID(input, output);
 				UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO( output );
 
-				output.ase_texcoord2 = input.positionOS;
-				output.ase_texcoord3.xy = input.ase_texcoord1.xy;
+				output.ase_texcoord2.xy = input.ase_texcoord1.xy;
 				
 				//setting value to unused interpolator channels and avoid initialization warnings
-				output.ase_texcoord3.zw = 0;
+				output.ase_texcoord2.zw = 0;
 
 				#ifdef ASE_ABSOLUTE_VERTEX_POS
 					float3 defaultVertexValue = input.positionOS.xyz;
@@ -795,24 +750,15 @@ Shader "ThrusterCoreTiled"
 					#endif
 				#endif
 
-				float2 appendResult342 = (float2(input.ase_texcoord2.xyz.x , input.ase_texcoord2.xyz.z));
-				float Vertex_Distance_From_Center_Relative345 = ( length( appendResult342 ) / 0.7 );
-				float BackTexColorRangeOverlay516 = ( ( sin( ( ( ( Vertex_Distance_From_Center_Relative345 * _BackTexColorRangeOverlayFrequency ) + ( _BackTexColorRangeOverlayOffset * 2.0 ) ) * PI ) ) + 1.0 ) * 0.5 * _BackTexColorRangeOverlayStrength );
 				float2 temp_cast_0 = (_BackTexScale).xx;
-				float mulTime379 = _TimeParameters.x * (float)_DynamicBackTecRotationSpeed;
-				float2 appendResult377 = (float2(( ( mulTime379 * _BackTexRotationSpeed ) + _BackTexRotationSpeed ) , ( _BackTexMoveToCenterSpeed + ( _BackTexMoveToCenterSpeed * mulTime379 ) )));
-				float2 texCoord378 = input.ase_texcoord3.xy * temp_cast_0 + ( ( ( _BackTexScale * -0.5 ) + 0.5 ) + appendResult377 );
+				float2 appendResult377 = (float2(( _MoveSpeedX * _TimeParameters.x ) , ( _TimeParameters.x * _MoveSpeedY )));
+				float2 texCoord378 = input.ase_texcoord2.xy * temp_cast_0 + ( ( ( _BackTexScale * -0.5 ) + 0.5 ) + appendResult377 );
 				float3 rotatedValue580 = RotateAroundAxis( float3( 0.5,0.5,0.5 ), float3( texCoord378 ,  0.0 ), normalize( float3( 0,0,1 ) ), ( ( _BackTexFixedRotation * PI ) * 0.5 ) );
 				float4 tex2DNode38 = tex2D( _BackTexture, rotatedValue580.xy );
-				float BackTextureColorRange369 = saturate( (0.0 + (( ( tex2DNode38.r + tex2DNode38.g + tex2DNode38.b ) / 3.0 ) - _BackTexValueRemap.x) * (1.0 - 0.0) / (_BackTexValueRemap.y - _BackTexValueRemap.x)) );
-				float ColorRangeFinal543 = saturate( ( 0.0 + saturate( ( BackTexColorRangeOverlay516 * BackTextureColorRange369 ) ) ) );
-				float4 lerpResult547 = lerp( _Color_1 , _Color_2 , saturate( (0.0 + (ColorRangeFinal543 - _Color_2_Start) * (1.0 - 0.0) / (_Color_3_Start - _Color_2_Start)) ));
-				float4 lerpResult550 = lerp( _Color_2 , _Color3 , saturate( (0.0 + (ColorRangeFinal543 - _Color_3_Start) * (1.0 - 0.0) / (_Color_3_Full - _Color_3_Start)) ));
-				float4 temp_output_404_0 = ( ( ColorRangeFinal543 < _Color_2_Start ? _Color_1 : ( ColorRangeFinal543 < _Color_3_Start ? lerpResult547 : ( ColorRangeFinal543 < _Color_3_Full ? lerpResult550 : _Color3 ) ) ) * _ShowMaster );
-				float dotResult590 = dot( temp_output_404_0 , float4( 1,1,1,0 ) );
+				float TextureValueRemaped369 = saturate( (0.0 + (( ( tex2DNode38.r + tex2DNode38.g + tex2DNode38.b ) / 3.0 ) - _BackTexValueRemap.x) * (1.0 - 0.0) / (_BackTexValueRemap.y - _BackTexValueRemap.x)) );
 				
 
-				float Alpha = ( dotResult590 >= _Float0 ? 1.0 : 0.0 );
+				float Alpha = TextureValueRemaped369;
 				float AlphaClipThreshold = 0.5;
 				float AlphaClipThresholdShadow = 0.5;
 
@@ -866,8 +812,7 @@ Shader "ThrusterCoreTiled"
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/LODCrossFade.hlsl"
             #endif
 
-			#define ASE_NEEDS_FRAG_POSITION
-
+			
 
 			struct Attributes
 			{
@@ -888,29 +833,18 @@ Shader "ThrusterCoreTiled"
 				float4 shadowCoord : TEXCOORD2;
 				#endif
 				float4 ase_texcoord3 : TEXCOORD3;
-				float4 ase_texcoord4 : TEXCOORD4;
 				UNITY_VERTEX_INPUT_INSTANCE_ID
 				UNITY_VERTEX_OUTPUT_STEREO
 			};
 
 			CBUFFER_START(UnityPerMaterial)
-			float4 _Color3;
-			float4 _Color_2;
-			float4 _Color_1;
+			float4 _TextureColorA;
+			float4 _TextureColorB;
 			float2 _BackTexValueRemap;
-			float _Color_3_Full;
-			float _Color_3_Start;
-			float _Color_2_Start;
-			float _ShowMaster;
-			float _BackTexColorRangeOverlayFrequency;
-			float _BackTexRotationSpeed;
-			int _DynamicBackTecRotationSpeed;
-			float _BackTexScale;
 			float _BackTexFixedRotation;
-			float _BackTexColorRangeOverlayStrength;
-			float _BackTexColorRangeOverlayOffset;
-			float _BackTexMoveToCenterSpeed;
-			float _Float0;
+			float _BackTexScale;
+			float _MoveSpeedX;
+			float _MoveSpeedY;
 			#ifdef ASE_TESSELLATION
 				float _TessPhongStrength;
 				float _TessValue;
@@ -951,11 +885,10 @@ Shader "ThrusterCoreTiled"
 				UNITY_TRANSFER_INSTANCE_ID(input, output);
 				UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(output);
 
-				output.ase_texcoord3 = input.positionOS;
-				output.ase_texcoord4.xy = input.ase_texcoord1.xy;
+				output.ase_texcoord3.xy = input.ase_texcoord1.xy;
 				
 				//setting value to unused interpolator channels and avoid initialization warnings
-				output.ase_texcoord4.zw = 0;
+				output.ase_texcoord3.zw = 0;
 
 				#ifdef ASE_ABSOLUTE_VERTEX_POS
 					float3 defaultVertexValue = input.positionOS.xyz;
@@ -1090,24 +1023,15 @@ Shader "ThrusterCoreTiled"
 					#endif
 				#endif
 
-				float2 appendResult342 = (float2(input.ase_texcoord3.xyz.x , input.ase_texcoord3.xyz.z));
-				float Vertex_Distance_From_Center_Relative345 = ( length( appendResult342 ) / 0.7 );
-				float BackTexColorRangeOverlay516 = ( ( sin( ( ( ( Vertex_Distance_From_Center_Relative345 * _BackTexColorRangeOverlayFrequency ) + ( _BackTexColorRangeOverlayOffset * 2.0 ) ) * PI ) ) + 1.0 ) * 0.5 * _BackTexColorRangeOverlayStrength );
 				float2 temp_cast_0 = (_BackTexScale).xx;
-				float mulTime379 = _TimeParameters.x * (float)_DynamicBackTecRotationSpeed;
-				float2 appendResult377 = (float2(( ( mulTime379 * _BackTexRotationSpeed ) + _BackTexRotationSpeed ) , ( _BackTexMoveToCenterSpeed + ( _BackTexMoveToCenterSpeed * mulTime379 ) )));
-				float2 texCoord378 = input.ase_texcoord4.xy * temp_cast_0 + ( ( ( _BackTexScale * -0.5 ) + 0.5 ) + appendResult377 );
+				float2 appendResult377 = (float2(( _MoveSpeedX * _TimeParameters.x ) , ( _TimeParameters.x * _MoveSpeedY )));
+				float2 texCoord378 = input.ase_texcoord3.xy * temp_cast_0 + ( ( ( _BackTexScale * -0.5 ) + 0.5 ) + appendResult377 );
 				float3 rotatedValue580 = RotateAroundAxis( float3( 0.5,0.5,0.5 ), float3( texCoord378 ,  0.0 ), normalize( float3( 0,0,1 ) ), ( ( _BackTexFixedRotation * PI ) * 0.5 ) );
 				float4 tex2DNode38 = tex2D( _BackTexture, rotatedValue580.xy );
-				float BackTextureColorRange369 = saturate( (0.0 + (( ( tex2DNode38.r + tex2DNode38.g + tex2DNode38.b ) / 3.0 ) - _BackTexValueRemap.x) * (1.0 - 0.0) / (_BackTexValueRemap.y - _BackTexValueRemap.x)) );
-				float ColorRangeFinal543 = saturate( ( 0.0 + saturate( ( BackTexColorRangeOverlay516 * BackTextureColorRange369 ) ) ) );
-				float4 lerpResult547 = lerp( _Color_1 , _Color_2 , saturate( (0.0 + (ColorRangeFinal543 - _Color_2_Start) * (1.0 - 0.0) / (_Color_3_Start - _Color_2_Start)) ));
-				float4 lerpResult550 = lerp( _Color_2 , _Color3 , saturate( (0.0 + (ColorRangeFinal543 - _Color_3_Start) * (1.0 - 0.0) / (_Color_3_Full - _Color_3_Start)) ));
-				float4 temp_output_404_0 = ( ( ColorRangeFinal543 < _Color_2_Start ? _Color_1 : ( ColorRangeFinal543 < _Color_3_Start ? lerpResult547 : ( ColorRangeFinal543 < _Color_3_Full ? lerpResult550 : _Color3 ) ) ) * _ShowMaster );
-				float dotResult590 = dot( temp_output_404_0 , float4( 1,1,1,0 ) );
+				float TextureValueRemaped369 = saturate( (0.0 + (( ( tex2DNode38.r + tex2DNode38.g + tex2DNode38.b ) / 3.0 ) - _BackTexValueRemap.x) * (1.0 - 0.0) / (_BackTexValueRemap.y - _BackTexValueRemap.x)) );
 				
 
-				float Alpha = ( dotResult590 >= _Float0 ? 1.0 : 0.0 );
+				float Alpha = TextureValueRemaped369;
 				float AlphaClipThreshold = 0.5;
 
 				#ifdef _ALPHATEST_ON
@@ -1158,8 +1082,7 @@ Shader "ThrusterCoreTiled"
 			#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/ShaderGraphFunctions.hlsl"
 			#include "Packages/com.unity.render-pipelines.universal/Editor/ShaderGraph/Includes/ShaderPass.hlsl"
 
-			#define ASE_NEEDS_FRAG_POSITION
-
+			
 
 			struct Attributes
 			{
@@ -1173,29 +1096,18 @@ Shader "ThrusterCoreTiled"
 			{
 				float4 positionCS : SV_POSITION;
 				float4 ase_texcoord : TEXCOORD0;
-				float4 ase_texcoord1 : TEXCOORD1;
 				UNITY_VERTEX_INPUT_INSTANCE_ID
 				UNITY_VERTEX_OUTPUT_STEREO
 			};
 
 			CBUFFER_START(UnityPerMaterial)
-			float4 _Color3;
-			float4 _Color_2;
-			float4 _Color_1;
+			float4 _TextureColorA;
+			float4 _TextureColorB;
 			float2 _BackTexValueRemap;
-			float _Color_3_Full;
-			float _Color_3_Start;
-			float _Color_2_Start;
-			float _ShowMaster;
-			float _BackTexColorRangeOverlayFrequency;
-			float _BackTexRotationSpeed;
-			int _DynamicBackTecRotationSpeed;
-			float _BackTexScale;
 			float _BackTexFixedRotation;
-			float _BackTexColorRangeOverlayStrength;
-			float _BackTexColorRangeOverlayOffset;
-			float _BackTexMoveToCenterSpeed;
-			float _Float0;
+			float _BackTexScale;
+			float _MoveSpeedX;
+			float _MoveSpeedY;
 			#ifdef ASE_TESSELLATION
 				float _TessPhongStrength;
 				float _TessValue;
@@ -1247,11 +1159,10 @@ Shader "ThrusterCoreTiled"
 				UNITY_TRANSFER_INSTANCE_ID(input, output);
 				UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(output);
 
-				output.ase_texcoord = input.positionOS;
-				output.ase_texcoord1.xy = input.ase_texcoord1.xy;
+				output.ase_texcoord.xy = input.ase_texcoord1.xy;
 				
 				//setting value to unused interpolator channels and avoid initialization warnings
-				output.ase_texcoord1.zw = 0;
+				output.ase_texcoord.zw = 0;
 
 				#ifdef ASE_ABSOLUTE_VERTEX_POS
 					float3 defaultVertexValue = input.positionOS.xyz;
@@ -1360,24 +1271,15 @@ Shader "ThrusterCoreTiled"
 			{
 				SurfaceDescription surfaceDescription = (SurfaceDescription)0;
 
-				float2 appendResult342 = (float2(input.ase_texcoord.xyz.x , input.ase_texcoord.xyz.z));
-				float Vertex_Distance_From_Center_Relative345 = ( length( appendResult342 ) / 0.7 );
-				float BackTexColorRangeOverlay516 = ( ( sin( ( ( ( Vertex_Distance_From_Center_Relative345 * _BackTexColorRangeOverlayFrequency ) + ( _BackTexColorRangeOverlayOffset * 2.0 ) ) * PI ) ) + 1.0 ) * 0.5 * _BackTexColorRangeOverlayStrength );
 				float2 temp_cast_0 = (_BackTexScale).xx;
-				float mulTime379 = _TimeParameters.x * (float)_DynamicBackTecRotationSpeed;
-				float2 appendResult377 = (float2(( ( mulTime379 * _BackTexRotationSpeed ) + _BackTexRotationSpeed ) , ( _BackTexMoveToCenterSpeed + ( _BackTexMoveToCenterSpeed * mulTime379 ) )));
-				float2 texCoord378 = input.ase_texcoord1.xy * temp_cast_0 + ( ( ( _BackTexScale * -0.5 ) + 0.5 ) + appendResult377 );
+				float2 appendResult377 = (float2(( _MoveSpeedX * _TimeParameters.x ) , ( _TimeParameters.x * _MoveSpeedY )));
+				float2 texCoord378 = input.ase_texcoord.xy * temp_cast_0 + ( ( ( _BackTexScale * -0.5 ) + 0.5 ) + appendResult377 );
 				float3 rotatedValue580 = RotateAroundAxis( float3( 0.5,0.5,0.5 ), float3( texCoord378 ,  0.0 ), normalize( float3( 0,0,1 ) ), ( ( _BackTexFixedRotation * PI ) * 0.5 ) );
 				float4 tex2DNode38 = tex2D( _BackTexture, rotatedValue580.xy );
-				float BackTextureColorRange369 = saturate( (0.0 + (( ( tex2DNode38.r + tex2DNode38.g + tex2DNode38.b ) / 3.0 ) - _BackTexValueRemap.x) * (1.0 - 0.0) / (_BackTexValueRemap.y - _BackTexValueRemap.x)) );
-				float ColorRangeFinal543 = saturate( ( 0.0 + saturate( ( BackTexColorRangeOverlay516 * BackTextureColorRange369 ) ) ) );
-				float4 lerpResult547 = lerp( _Color_1 , _Color_2 , saturate( (0.0 + (ColorRangeFinal543 - _Color_2_Start) * (1.0 - 0.0) / (_Color_3_Start - _Color_2_Start)) ));
-				float4 lerpResult550 = lerp( _Color_2 , _Color3 , saturate( (0.0 + (ColorRangeFinal543 - _Color_3_Start) * (1.0 - 0.0) / (_Color_3_Full - _Color_3_Start)) ));
-				float4 temp_output_404_0 = ( ( ColorRangeFinal543 < _Color_2_Start ? _Color_1 : ( ColorRangeFinal543 < _Color_3_Start ? lerpResult547 : ( ColorRangeFinal543 < _Color_3_Full ? lerpResult550 : _Color3 ) ) ) * _ShowMaster );
-				float dotResult590 = dot( temp_output_404_0 , float4( 1,1,1,0 ) );
+				float TextureValueRemaped369 = saturate( (0.0 + (( ( tex2DNode38.r + tex2DNode38.g + tex2DNode38.b ) / 3.0 ) - _BackTexValueRemap.x) * (1.0 - 0.0) / (_BackTexValueRemap.y - _BackTexValueRemap.x)) );
 				
 
-				surfaceDescription.Alpha = ( dotResult590 >= _Float0 ? 1.0 : 0.0 );
+				surfaceDescription.Alpha = TextureValueRemaped369;
 				surfaceDescription.AlphaClipThreshold = 0.5;
 
 				#if _ALPHATEST_ON
@@ -1434,8 +1336,7 @@ Shader "ThrusterCoreTiled"
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/LODCrossFade.hlsl"
             #endif
 
-			#define ASE_NEEDS_FRAG_POSITION
-
+			
 
 			struct Attributes
 			{
@@ -1449,29 +1350,18 @@ Shader "ThrusterCoreTiled"
 			{
 				float4 positionCS : SV_POSITION;
 				float4 ase_texcoord : TEXCOORD0;
-				float4 ase_texcoord1 : TEXCOORD1;
 				UNITY_VERTEX_INPUT_INSTANCE_ID
 				UNITY_VERTEX_OUTPUT_STEREO
 			};
 
 			CBUFFER_START(UnityPerMaterial)
-			float4 _Color3;
-			float4 _Color_2;
-			float4 _Color_1;
+			float4 _TextureColorA;
+			float4 _TextureColorB;
 			float2 _BackTexValueRemap;
-			float _Color_3_Full;
-			float _Color_3_Start;
-			float _Color_2_Start;
-			float _ShowMaster;
-			float _BackTexColorRangeOverlayFrequency;
-			float _BackTexRotationSpeed;
-			int _DynamicBackTecRotationSpeed;
-			float _BackTexScale;
 			float _BackTexFixedRotation;
-			float _BackTexColorRangeOverlayStrength;
-			float _BackTexColorRangeOverlayOffset;
-			float _BackTexMoveToCenterSpeed;
-			float _Float0;
+			float _BackTexScale;
+			float _MoveSpeedX;
+			float _MoveSpeedY;
 			#ifdef ASE_TESSELLATION
 				float _TessPhongStrength;
 				float _TessValue;
@@ -1522,11 +1412,10 @@ Shader "ThrusterCoreTiled"
 				UNITY_TRANSFER_INSTANCE_ID(input, output);
 				UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(output);
 
-				output.ase_texcoord = input.positionOS;
-				output.ase_texcoord1.xy = input.ase_texcoord1.xy;
+				output.ase_texcoord.xy = input.ase_texcoord1.xy;
 				
 				//setting value to unused interpolator channels and avoid initialization warnings
-				output.ase_texcoord1.zw = 0;
+				output.ase_texcoord.zw = 0;
 
 				#ifdef ASE_ABSOLUTE_VERTEX_POS
 					float3 defaultVertexValue = input.positionOS.xyz;
@@ -1633,24 +1522,15 @@ Shader "ThrusterCoreTiled"
 			{
 				SurfaceDescription surfaceDescription = (SurfaceDescription)0;
 
-				float2 appendResult342 = (float2(input.ase_texcoord.xyz.x , input.ase_texcoord.xyz.z));
-				float Vertex_Distance_From_Center_Relative345 = ( length( appendResult342 ) / 0.7 );
-				float BackTexColorRangeOverlay516 = ( ( sin( ( ( ( Vertex_Distance_From_Center_Relative345 * _BackTexColorRangeOverlayFrequency ) + ( _BackTexColorRangeOverlayOffset * 2.0 ) ) * PI ) ) + 1.0 ) * 0.5 * _BackTexColorRangeOverlayStrength );
 				float2 temp_cast_0 = (_BackTexScale).xx;
-				float mulTime379 = _TimeParameters.x * (float)_DynamicBackTecRotationSpeed;
-				float2 appendResult377 = (float2(( ( mulTime379 * _BackTexRotationSpeed ) + _BackTexRotationSpeed ) , ( _BackTexMoveToCenterSpeed + ( _BackTexMoveToCenterSpeed * mulTime379 ) )));
-				float2 texCoord378 = input.ase_texcoord1.xy * temp_cast_0 + ( ( ( _BackTexScale * -0.5 ) + 0.5 ) + appendResult377 );
+				float2 appendResult377 = (float2(( _MoveSpeedX * _TimeParameters.x ) , ( _TimeParameters.x * _MoveSpeedY )));
+				float2 texCoord378 = input.ase_texcoord.xy * temp_cast_0 + ( ( ( _BackTexScale * -0.5 ) + 0.5 ) + appendResult377 );
 				float3 rotatedValue580 = RotateAroundAxis( float3( 0.5,0.5,0.5 ), float3( texCoord378 ,  0.0 ), normalize( float3( 0,0,1 ) ), ( ( _BackTexFixedRotation * PI ) * 0.5 ) );
 				float4 tex2DNode38 = tex2D( _BackTexture, rotatedValue580.xy );
-				float BackTextureColorRange369 = saturate( (0.0 + (( ( tex2DNode38.r + tex2DNode38.g + tex2DNode38.b ) / 3.0 ) - _BackTexValueRemap.x) * (1.0 - 0.0) / (_BackTexValueRemap.y - _BackTexValueRemap.x)) );
-				float ColorRangeFinal543 = saturate( ( 0.0 + saturate( ( BackTexColorRangeOverlay516 * BackTextureColorRange369 ) ) ) );
-				float4 lerpResult547 = lerp( _Color_1 , _Color_2 , saturate( (0.0 + (ColorRangeFinal543 - _Color_2_Start) * (1.0 - 0.0) / (_Color_3_Start - _Color_2_Start)) ));
-				float4 lerpResult550 = lerp( _Color_2 , _Color3 , saturate( (0.0 + (ColorRangeFinal543 - _Color_3_Start) * (1.0 - 0.0) / (_Color_3_Full - _Color_3_Start)) ));
-				float4 temp_output_404_0 = ( ( ColorRangeFinal543 < _Color_2_Start ? _Color_1 : ( ColorRangeFinal543 < _Color_3_Start ? lerpResult547 : ( ColorRangeFinal543 < _Color_3_Full ? lerpResult550 : _Color3 ) ) ) * _ShowMaster );
-				float dotResult590 = dot( temp_output_404_0 , float4( 1,1,1,0 ) );
+				float TextureValueRemaped369 = saturate( (0.0 + (( ( tex2DNode38.r + tex2DNode38.g + tex2DNode38.b ) / 3.0 ) - _BackTexValueRemap.x) * (1.0 - 0.0) / (_BackTexValueRemap.y - _BackTexValueRemap.x)) );
 				
 
-				surfaceDescription.Alpha = ( dotResult590 >= _Float0 ? 1.0 : 0.0 );
+				surfaceDescription.Alpha = TextureValueRemaped369;
 				surfaceDescription.AlphaClipThreshold = 0.5;
 
 				#if _ALPHATEST_ON
@@ -1716,8 +1596,7 @@ Shader "ThrusterCoreTiled"
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/LODCrossFade.hlsl"
             #endif
 
-			#define ASE_NEEDS_FRAG_POSITION
-
+			
 
 			struct Attributes
 			{
@@ -1733,29 +1612,18 @@ Shader "ThrusterCoreTiled"
 				float4 clipPosV : TEXCOORD0;
 				float3 normalWS : TEXCOORD1;
 				float4 ase_texcoord2 : TEXCOORD2;
-				float4 ase_texcoord3 : TEXCOORD3;
 				UNITY_VERTEX_INPUT_INSTANCE_ID
 				UNITY_VERTEX_OUTPUT_STEREO
 			};
 
 			CBUFFER_START(UnityPerMaterial)
-			float4 _Color3;
-			float4 _Color_2;
-			float4 _Color_1;
+			float4 _TextureColorA;
+			float4 _TextureColorB;
 			float2 _BackTexValueRemap;
-			float _Color_3_Full;
-			float _Color_3_Start;
-			float _Color_2_Start;
-			float _ShowMaster;
-			float _BackTexColorRangeOverlayFrequency;
-			float _BackTexRotationSpeed;
-			int _DynamicBackTecRotationSpeed;
-			float _BackTexScale;
 			float _BackTexFixedRotation;
-			float _BackTexColorRangeOverlayStrength;
-			float _BackTexColorRangeOverlayOffset;
-			float _BackTexMoveToCenterSpeed;
-			float _Float0;
+			float _BackTexScale;
+			float _MoveSpeedX;
+			float _MoveSpeedY;
 			#ifdef ASE_TESSELLATION
 				float _TessPhongStrength;
 				float _TessValue;
@@ -1804,11 +1672,10 @@ Shader "ThrusterCoreTiled"
 				UNITY_TRANSFER_INSTANCE_ID(input, output);
 				UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(output);
 
-				output.ase_texcoord2 = input.positionOS;
-				output.ase_texcoord3.xy = input.ase_texcoord1.xy;
+				output.ase_texcoord2.xy = input.ase_texcoord1.xy;
 				
 				//setting value to unused interpolator channels and avoid initialization warnings
-				output.ase_texcoord3.zw = 0;
+				output.ase_texcoord2.zw = 0;
 
 				#ifdef ASE_ABSOLUTE_VERTEX_POS
 					float3 defaultVertexValue = input.positionOS.xyz;
@@ -1924,24 +1791,15 @@ Shader "ThrusterCoreTiled"
 				float4 ClipPos = input.clipPosV;
 				float4 ScreenPos = ComputeScreenPos( input.clipPosV );
 
-				float2 appendResult342 = (float2(input.ase_texcoord2.xyz.x , input.ase_texcoord2.xyz.z));
-				float Vertex_Distance_From_Center_Relative345 = ( length( appendResult342 ) / 0.7 );
-				float BackTexColorRangeOverlay516 = ( ( sin( ( ( ( Vertex_Distance_From_Center_Relative345 * _BackTexColorRangeOverlayFrequency ) + ( _BackTexColorRangeOverlayOffset * 2.0 ) ) * PI ) ) + 1.0 ) * 0.5 * _BackTexColorRangeOverlayStrength );
 				float2 temp_cast_0 = (_BackTexScale).xx;
-				float mulTime379 = _TimeParameters.x * (float)_DynamicBackTecRotationSpeed;
-				float2 appendResult377 = (float2(( ( mulTime379 * _BackTexRotationSpeed ) + _BackTexRotationSpeed ) , ( _BackTexMoveToCenterSpeed + ( _BackTexMoveToCenterSpeed * mulTime379 ) )));
-				float2 texCoord378 = input.ase_texcoord3.xy * temp_cast_0 + ( ( ( _BackTexScale * -0.5 ) + 0.5 ) + appendResult377 );
+				float2 appendResult377 = (float2(( _MoveSpeedX * _TimeParameters.x ) , ( _TimeParameters.x * _MoveSpeedY )));
+				float2 texCoord378 = input.ase_texcoord2.xy * temp_cast_0 + ( ( ( _BackTexScale * -0.5 ) + 0.5 ) + appendResult377 );
 				float3 rotatedValue580 = RotateAroundAxis( float3( 0.5,0.5,0.5 ), float3( texCoord378 ,  0.0 ), normalize( float3( 0,0,1 ) ), ( ( _BackTexFixedRotation * PI ) * 0.5 ) );
 				float4 tex2DNode38 = tex2D( _BackTexture, rotatedValue580.xy );
-				float BackTextureColorRange369 = saturate( (0.0 + (( ( tex2DNode38.r + tex2DNode38.g + tex2DNode38.b ) / 3.0 ) - _BackTexValueRemap.x) * (1.0 - 0.0) / (_BackTexValueRemap.y - _BackTexValueRemap.x)) );
-				float ColorRangeFinal543 = saturate( ( 0.0 + saturate( ( BackTexColorRangeOverlay516 * BackTextureColorRange369 ) ) ) );
-				float4 lerpResult547 = lerp( _Color_1 , _Color_2 , saturate( (0.0 + (ColorRangeFinal543 - _Color_2_Start) * (1.0 - 0.0) / (_Color_3_Start - _Color_2_Start)) ));
-				float4 lerpResult550 = lerp( _Color_2 , _Color3 , saturate( (0.0 + (ColorRangeFinal543 - _Color_3_Start) * (1.0 - 0.0) / (_Color_3_Full - _Color_3_Start)) ));
-				float4 temp_output_404_0 = ( ( ColorRangeFinal543 < _Color_2_Start ? _Color_1 : ( ColorRangeFinal543 < _Color_3_Start ? lerpResult547 : ( ColorRangeFinal543 < _Color_3_Full ? lerpResult550 : _Color3 ) ) ) * _ShowMaster );
-				float dotResult590 = dot( temp_output_404_0 , float4( 1,1,1,0 ) );
+				float TextureValueRemaped369 = saturate( (0.0 + (( ( tex2DNode38.r + tex2DNode38.g + tex2DNode38.b ) / 3.0 ) - _BackTexValueRemap.x) * (1.0 - 0.0) / (_BackTexValueRemap.y - _BackTexValueRemap.x)) );
 				
 
-				float Alpha = ( dotResult590 >= _Float0 ? 1.0 : 0.0 );
+				float Alpha = TextureValueRemaped369;
 				float AlphaClipThreshold = 0.5;
 
 				#if _ALPHATEST_ON
@@ -2012,8 +1870,7 @@ Shader "ThrusterCoreTiled"
 
 			#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/MotionVectorsCommon.hlsl"
 
-			#define ASE_NEEDS_FRAG_POSITION
-
+			
 
 			struct Attributes
 			{
@@ -2032,29 +1889,18 @@ Shader "ThrusterCoreTiled"
 				float4 positionCSNoJitter : TEXCOORD0;
 				float4 previousPositionCSNoJitter : TEXCOORD1;
 				float4 ase_texcoord2 : TEXCOORD2;
-				float4 ase_texcoord3 : TEXCOORD3;
 				UNITY_VERTEX_INPUT_INSTANCE_ID
 				UNITY_VERTEX_OUTPUT_STEREO
 			};
 
 			CBUFFER_START(UnityPerMaterial)
-			float4 _Color3;
-			float4 _Color_2;
-			float4 _Color_1;
+			float4 _TextureColorA;
+			float4 _TextureColorB;
 			float2 _BackTexValueRemap;
-			float _Color_3_Full;
-			float _Color_3_Start;
-			float _Color_2_Start;
-			float _ShowMaster;
-			float _BackTexColorRangeOverlayFrequency;
-			float _BackTexRotationSpeed;
-			int _DynamicBackTecRotationSpeed;
-			float _BackTexScale;
 			float _BackTexFixedRotation;
-			float _BackTexColorRangeOverlayStrength;
-			float _BackTexColorRangeOverlayOffset;
-			float _BackTexMoveToCenterSpeed;
-			float _Float0;
+			float _BackTexScale;
+			float _MoveSpeedX;
+			float _MoveSpeedY;
 			#ifdef ASE_TRANSMISSION
 				float _TransmissionShadow;
 			#endif
@@ -2115,11 +1961,10 @@ Shader "ThrusterCoreTiled"
 				UNITY_TRANSFER_INSTANCE_ID(input, output);
 				UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(output);
 
-				output.ase_texcoord2 = input.positionOS;
-				output.ase_texcoord3.xy = input.ase_texcoord1.xy;
+				output.ase_texcoord2.xy = input.ase_texcoord1.xy;
 				
 				//setting value to unused interpolator channels and avoid initialization warnings
-				output.ase_texcoord3.zw = 0;
+				output.ase_texcoord2.zw = 0;
 
 				#ifdef ASE_ABSOLUTE_VERTEX_POS
 					float3 defaultVertexValue = input.positionOS.xyz;
@@ -2163,24 +2008,15 @@ Shader "ThrusterCoreTiled"
 				UNITY_SETUP_INSTANCE_ID(input);
 				UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX( input );
 
-				float2 appendResult342 = (float2(input.ase_texcoord2.xyz.x , input.ase_texcoord2.xyz.z));
-				float Vertex_Distance_From_Center_Relative345 = ( length( appendResult342 ) / 0.7 );
-				float BackTexColorRangeOverlay516 = ( ( sin( ( ( ( Vertex_Distance_From_Center_Relative345 * _BackTexColorRangeOverlayFrequency ) + ( _BackTexColorRangeOverlayOffset * 2.0 ) ) * PI ) ) + 1.0 ) * 0.5 * _BackTexColorRangeOverlayStrength );
 				float2 temp_cast_0 = (_BackTexScale).xx;
-				float mulTime379 = _TimeParameters.x * (float)_DynamicBackTecRotationSpeed;
-				float2 appendResult377 = (float2(( ( mulTime379 * _BackTexRotationSpeed ) + _BackTexRotationSpeed ) , ( _BackTexMoveToCenterSpeed + ( _BackTexMoveToCenterSpeed * mulTime379 ) )));
-				float2 texCoord378 = input.ase_texcoord3.xy * temp_cast_0 + ( ( ( _BackTexScale * -0.5 ) + 0.5 ) + appendResult377 );
+				float2 appendResult377 = (float2(( _MoveSpeedX * _TimeParameters.x ) , ( _TimeParameters.x * _MoveSpeedY )));
+				float2 texCoord378 = input.ase_texcoord2.xy * temp_cast_0 + ( ( ( _BackTexScale * -0.5 ) + 0.5 ) + appendResult377 );
 				float3 rotatedValue580 = RotateAroundAxis( float3( 0.5,0.5,0.5 ), float3( texCoord378 ,  0.0 ), normalize( float3( 0,0,1 ) ), ( ( _BackTexFixedRotation * PI ) * 0.5 ) );
 				float4 tex2DNode38 = tex2D( _BackTexture, rotatedValue580.xy );
-				float BackTextureColorRange369 = saturate( (0.0 + (( ( tex2DNode38.r + tex2DNode38.g + tex2DNode38.b ) / 3.0 ) - _BackTexValueRemap.x) * (1.0 - 0.0) / (_BackTexValueRemap.y - _BackTexValueRemap.x)) );
-				float ColorRangeFinal543 = saturate( ( 0.0 + saturate( ( BackTexColorRangeOverlay516 * BackTextureColorRange369 ) ) ) );
-				float4 lerpResult547 = lerp( _Color_1 , _Color_2 , saturate( (0.0 + (ColorRangeFinal543 - _Color_2_Start) * (1.0 - 0.0) / (_Color_3_Start - _Color_2_Start)) ));
-				float4 lerpResult550 = lerp( _Color_2 , _Color3 , saturate( (0.0 + (ColorRangeFinal543 - _Color_3_Start) * (1.0 - 0.0) / (_Color_3_Full - _Color_3_Start)) ));
-				float4 temp_output_404_0 = ( ( ColorRangeFinal543 < _Color_2_Start ? _Color_1 : ( ColorRangeFinal543 < _Color_3_Start ? lerpResult547 : ( ColorRangeFinal543 < _Color_3_Full ? lerpResult550 : _Color3 ) ) ) * _ShowMaster );
-				float dotResult590 = dot( temp_output_404_0 , float4( 1,1,1,0 ) );
+				float TextureValueRemaped369 = saturate( (0.0 + (( ( tex2DNode38.r + tex2DNode38.g + tex2DNode38.b ) / 3.0 ) - _BackTexValueRemap.x) * (1.0 - 0.0) / (_BackTexValueRemap.y - _BackTexValueRemap.x)) );
 				
 
-				float Alpha = ( dotResult590 >= _Float0 ? 1.0 : 0.0 );
+				float Alpha = TextureValueRemaped369;
 				float AlphaClipThreshold = 0.5;
 
 				#ifdef _ALPHATEST_ON
@@ -2205,183 +2041,39 @@ Shader "ThrusterCoreTiled"
 }
 /*ASEBEGIN
 Version=19603
-Node;AmplifyShaderEditor.CommentaryNode;349;-3090.427,-2841.338;Inherit;False;1363.052;329.877;Comment;6;341;342;344;343;345;340;Distance From Center Relative;1,1,1,1;0;0
-Node;AmplifyShaderEditor.CommentaryNode;175;255.9677,-956.07;Inherit;False;1914.884;836.5123;Comment;19;49;50;38;379;377;378;376;375;417;418;501;502;503;504;509;580;581;582;583;BackTexture;0.167702,0.4790962,0.6226415,1;0;0
-Node;AmplifyShaderEditor.IntNode;380;46.97411,-757.4567;Inherit;False;Property;_DynamicBackTecRotationSpeed;DynamicBackTecRotationSpeed;2;0;Create;True;0;0;0;False;0;False;1;1;False;0;1;INT;0
-Node;AmplifyShaderEditor.PosVertexDataNode;341;-3040.426,-2791.338;Inherit;False;0;0;5;FLOAT3;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
-Node;AmplifyShaderEditor.SimpleTimeNode;379;411.3051,-776.3256;Inherit;False;1;0;FLOAT;1;False;1;FLOAT;0
-Node;AmplifyShaderEditor.RangedFloatNode;50;343.6049,-920.9107;Inherit;False;Property;_BackTexMoveToCenterSpeed;BackTexMoveToCenterSpeed;28;0;Create;True;0;0;0;False;0;False;0;0.57;0;0;0;1;FLOAT;0
-Node;AmplifyShaderEditor.RangedFloatNode;49;368.1766,-633.8679;Inherit;False;Property;_BackTexRotationSpeed;BackTexRotationSpeed;27;0;Create;True;0;0;0;False;0;False;0;9.73;0;0;0;1;FLOAT;0
-Node;AmplifyShaderEditor.DynamicAppendNode;342;-2795.123,-2757.948;Inherit;False;FLOAT2;4;0;FLOAT;0;False;1;FLOAT;0;False;2;FLOAT;0;False;3;FLOAT;0;False;1;FLOAT2;0
-Node;AmplifyShaderEditor.SimpleMultiplyOpNode;376;618.5233,-835.0846;Inherit;False;2;2;0;FLOAT;0;False;1;FLOAT;15.89;False;1;FLOAT;0
-Node;AmplifyShaderEditor.SimpleMultiplyOpNode;375;614.9955,-734.705;Inherit;False;2;2;0;FLOAT;0;False;1;FLOAT;-1.2;False;1;FLOAT;0
-Node;AmplifyShaderEditor.RangedFloatNode;504;422.7547,-483.0258;Inherit;False;Property;_BackTexScale;BackTexScale;26;0;Create;True;0;0;0;False;0;False;1;1;0;0;0;1;FLOAT;0
-Node;AmplifyShaderEditor.LengthOpNode;343;-2550.768,-2733.238;Inherit;False;1;0;FLOAT2;0,0;False;1;FLOAT;0
-Node;AmplifyShaderEditor.RangedFloatNode;340;-2560.995,-2624.261;Inherit;False;Constant;_RadiusAbsolute;Radius Absolute;37;0;Create;True;0;0;0;False;0;False;0.7;0;0.7;0.7;0;1;FLOAT;0
-Node;AmplifyShaderEditor.SimpleAddOpNode;417;811.5376,-875.5546;Inherit;False;2;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
-Node;AmplifyShaderEditor.SimpleAddOpNode;418;803.8907,-700.5285;Inherit;False;2;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
+Node;AmplifyShaderEditor.CommentaryNode;175;255.9677,-956.07;Inherit;False;1914.884;836.5123;Comment;17;49;50;38;379;377;378;376;375;501;502;503;504;509;580;581;582;583;BackTexture;0.167702,0.4790962,0.6226415,1;0;0
+Node;AmplifyShaderEditor.RangedFloatNode;504;384,-560;Inherit;False;Property;_BackTexScale;BackTexScale;5;0;Create;True;0;0;0;False;0;False;1;1;0;0;0;1;FLOAT;0
+Node;AmplifyShaderEditor.SimpleTimeNode;379;272,-784;Inherit;False;1;0;FLOAT;1;False;1;FLOAT;0
+Node;AmplifyShaderEditor.RangedFloatNode;50;288,-896;Inherit;False;Property;_MoveSpeedX;MoveSpeedX;7;0;Create;True;0;0;0;False;0;False;0;0.57;-5;5;0;1;FLOAT;0
+Node;AmplifyShaderEditor.RangedFloatNode;49;320,-672;Inherit;False;Property;_MoveSpeedY;MoveSpeedY;6;0;Create;True;0;0;0;False;0;False;0;9.73;-5;5;0;1;FLOAT;0
 Node;AmplifyShaderEditor.SimpleMultiplyOpNode;501;661.1934,-504.4855;Inherit;False;2;2;0;FLOAT;0;False;1;FLOAT;-0.5;False;1;FLOAT;0
-Node;AmplifyShaderEditor.SimpleDivideOpNode;344;-2336.78,-2731.171;Inherit;False;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
+Node;AmplifyShaderEditor.SimpleMultiplyOpNode;376;624,-864;Inherit;False;2;2;0;FLOAT;0;False;1;FLOAT;15.89;False;1;FLOAT;0
+Node;AmplifyShaderEditor.SimpleMultiplyOpNode;375;624,-720;Inherit;False;2;2;0;FLOAT;0;False;1;FLOAT;-1.2;False;1;FLOAT;0
 Node;AmplifyShaderEditor.SimpleAddOpNode;502;902.3771,-519.0074;Inherit;False;2;2;0;FLOAT;0;False;1;FLOAT;0.5;False;1;FLOAT;0
 Node;AmplifyShaderEditor.DynamicAppendNode;377;987.9332,-881.3678;Inherit;False;FLOAT2;4;0;FLOAT;0;False;1;FLOAT;0;False;2;FLOAT;0;False;3;FLOAT;0;False;1;FLOAT2;0
-Node;AmplifyShaderEditor.RangedFloatNode;581;827.5117,-300.07;Inherit;False;Property;_BackTexFixedRotation;BackTexFixedRotation;32;0;Create;True;0;0;0;False;0;False;0;0;0;1;0;1;FLOAT;0
-Node;AmplifyShaderEditor.RegisterLocalVarNode;345;-2096.123,-2786.275;Inherit;False;Vertex Distance From Center Relative;-1;True;1;0;FLOAT;0;False;1;FLOAT;0
-Node;AmplifyShaderEditor.CommentaryNode;515;3212.467,-1272.904;Inherit;False;1745.463;514.3179;Comment;12;527;526;525;524;523;522;521;520;519;518;517;516;BackTextureColorRangeOverlay;1,1,1,1;0;0
-Node;AmplifyShaderEditor.PiNode;582;1108.395,-438.906;Inherit;False;1;0;FLOAT;1;False;1;FLOAT;0
+Node;AmplifyShaderEditor.RangedFloatNode;581;784,-368;Inherit;False;Property;_BackTexFixedRotation;BackTexFixedRotation;8;0;Create;True;0;0;0;False;0;False;0;0;0;1;0;1;FLOAT;0
 Node;AmplifyShaderEditor.SimpleAddOpNode;503;1197.819,-623.3535;Inherit;False;2;2;0;FLOAT;0;False;1;FLOAT2;0.5,0;False;1;FLOAT2;0
-Node;AmplifyShaderEditor.GetLocalVarNode;523;3271.727,-1222.905;Inherit;False;345;Vertex Distance From Center Relative;1;0;OBJECT;;False;1;FLOAT;0
-Node;AmplifyShaderEditor.RangedFloatNode;526;3264.395,-1052.082;Inherit;False;Property;_BackTexColorRangeOverlayOffset;BackTexColorRangeOverlayOffset;30;0;Create;True;0;0;0;False;0;False;0;0.084;0;1;0;1;FLOAT;0
-Node;AmplifyShaderEditor.RangedFloatNode;527;3262.467,-1142.736;Inherit;False;Property;_BackTexColorRangeOverlayFrequency;BackTexColorRangeOverlayFrequency;31;0;Create;True;0;0;0;False;0;False;0;0;0;10;0;1;FLOAT;0
+Node;AmplifyShaderEditor.PiNode;582;1120,-416;Inherit;False;1;0;FLOAT;1;False;1;FLOAT;0
 Node;AmplifyShaderEditor.TextureCoordinatesNode;378;1332.947,-866.7255;Inherit;False;1;-1;2;3;2;SAMPLER2D;;False;0;FLOAT2;2,2;False;1;FLOAT2;0,0;False;5;FLOAT2;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
-Node;AmplifyShaderEditor.SimpleMultiplyOpNode;583;1327.698,-449.9325;Inherit;False;2;2;0;FLOAT;0;False;1;FLOAT;0.5;False;1;FLOAT;0
-Node;AmplifyShaderEditor.SimpleMultiplyOpNode;520;3627.144,-1069.352;Inherit;False;2;2;0;FLOAT;0;False;1;FLOAT;2;False;1;FLOAT;0
-Node;AmplifyShaderEditor.SimpleMultiplyOpNode;522;3622.571,-939.3472;Inherit;False;2;2;0;FLOAT;0;False;1;FLOAT;2;False;1;FLOAT;0
-Node;AmplifyShaderEditor.RotateAboutAxisNode;580;1474.078,-625.6244;Inherit;False;True;4;0;FLOAT3;0,0,1;False;1;FLOAT;0;False;2;FLOAT3;0.5,0.5,0.5;False;3;FLOAT3;0,0,0;False;1;FLOAT3;0
-Node;AmplifyShaderEditor.SimpleAddOpNode;521;3801.278,-977.7393;Inherit;False;2;2;0;FLOAT;0;False;1;FLOAT;1;False;1;FLOAT;0
-Node;AmplifyShaderEditor.SamplerNode;38;1658.492,-874.3408;Inherit;True;Property;_BackTexture;BackTexture;24;0;Create;True;0;0;0;False;0;False;-1;None;def94179b19c95740a14a81e3096e40d;True;2;False;black;Auto;False;Object;-1;Auto;Texture2D;8;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;6;FLOAT;0;False;7;SAMPLERSTATE;;False;6;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4;FLOAT3;5
+Node;AmplifyShaderEditor.SimpleMultiplyOpNode;583;1344,-384;Inherit;False;2;2;0;FLOAT;0;False;1;FLOAT;0.5;False;1;FLOAT;0
+Node;AmplifyShaderEditor.RotateAboutAxisNode;580;1568,-608;Inherit;False;True;4;0;FLOAT3;0,0,1;False;1;FLOAT;0;False;2;FLOAT3;0.5,0.5,0.5;False;3;FLOAT3;0,0,0;False;1;FLOAT3;0
+Node;AmplifyShaderEditor.SamplerNode;38;1658.492,-874.3408;Inherit;True;Property;_BackTexture;BackTexture;3;0;Create;True;0;0;0;False;0;False;-1;None;def94179b19c95740a14a81e3096e40d;True;2;False;black;Auto;False;Object;-1;Auto;Texture2D;8;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;6;FLOAT;0;False;7;SAMPLERSTATE;;False;6;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4;FLOAT3;5
 Node;AmplifyShaderEditor.SimpleAddOpNode;509;1997.535,-746.2872;Inherit;False;3;3;0;FLOAT;0;False;1;FLOAT;0;False;2;FLOAT;0;False;1;FLOAT;0
-Node;AmplifyShaderEditor.PiNode;519;3961.854,-1031.271;Inherit;False;1;0;FLOAT;1;False;1;FLOAT;0
 Node;AmplifyShaderEditor.SimpleDivideOpNode;508;2164.116,-714.6019;Inherit;False;2;0;FLOAT;0;False;1;FLOAT;3;False;1;FLOAT;0
-Node;AmplifyShaderEditor.SinOpNode;524;4154.244,-1103.077;Inherit;False;1;0;FLOAT;0;False;1;FLOAT;0
-Node;AmplifyShaderEditor.Vector2Node;473;2104.164,-563.6375;Inherit;False;Property;_BackTexValueRemap;BackTexValueRemap;25;0;Create;True;0;0;0;False;0;False;0,0;0,3.5;0;3;FLOAT2;0;FLOAT;1;FLOAT;2
+Node;AmplifyShaderEditor.Vector2Node;473;2104.164,-563.6375;Inherit;False;Property;_BackTexValueRemap;BackTexValueRemap;4;0;Create;True;0;0;0;False;0;False;0,0;0,3.5;0;3;FLOAT2;0;FLOAT;1;FLOAT;2
 Node;AmplifyShaderEditor.TFHCRemapNode;511;2418.584,-693.304;Inherit;False;5;0;FLOAT;0;False;1;FLOAT;0;False;2;FLOAT;1;False;3;FLOAT;0;False;4;FLOAT;1;False;1;FLOAT;0
-Node;AmplifyShaderEditor.SimpleAddOpNode;518;4350.145,-1124.352;Inherit;False;2;2;0;FLOAT;0;False;1;FLOAT;1;False;1;FLOAT;0
-Node;AmplifyShaderEditor.RangedFloatNode;525;4141.782,-943.0279;Inherit;False;Property;_BackTexColorRangeOverlayStrength;BackTexColorRangeOverlayStrength;29;0;Create;True;0;0;0;False;0;False;0;4.07;0;5;0;1;FLOAT;0
+Node;AmplifyShaderEditor.CommentaryNode;349;304,-1952;Inherit;False;1363.052;329.877;;4;341;342;343;345;Distance From Center;0.2894602,0.4603781,0.6933962,1;0;0
 Node;AmplifyShaderEditor.SaturateNode;512;2630.933,-666.8;Inherit;False;1;0;FLOAT;0;False;1;FLOAT;0
-Node;AmplifyShaderEditor.SimpleMultiplyOpNode;517;4477.511,-1055.671;Inherit;False;3;3;0;FLOAT;0;False;1;FLOAT;0.5;False;2;FLOAT;0;False;1;FLOAT;0
-Node;AmplifyShaderEditor.RegisterLocalVarNode;516;4600.178,-889.9699;Inherit;False;BackTexColorRangeOverlay;-1;True;1;0;FLOAT;0;False;1;FLOAT;0
-Node;AmplifyShaderEditor.RegisterLocalVarNode;369;2568.917,-1000.609;Inherit;False;BackTextureColorRange;-1;True;1;0;FLOAT;0;False;1;FLOAT;0
-Node;AmplifyShaderEditor.GetLocalVarNode;513;3860.011,-1933.454;Inherit;False;369;BackTextureColorRange;1;0;OBJECT;;False;1;FLOAT;0
-Node;AmplifyShaderEditor.GetLocalVarNode;531;3785.536,-2020.886;Inherit;False;516;BackTexColorRangeOverlay;1;0;OBJECT;;False;1;FLOAT;0
-Node;AmplifyShaderEditor.SimpleMultiplyOpNode;532;4173.212,-2061.017;Inherit;False;2;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
-Node;AmplifyShaderEditor.SaturateNode;535;4331.55,-2064.402;Inherit;False;1;0;FLOAT;0;False;1;FLOAT;0
-Node;AmplifyShaderEditor.SimpleAddOpNode;514;4517.892,-2164.333;Inherit;False;2;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
-Node;AmplifyShaderEditor.SaturateNode;538;4528,-2400;Inherit;False;1;0;FLOAT;0;False;1;FLOAT;0
-Node;AmplifyShaderEditor.CommentaryNode;553;3402.645,-4506.527;Inherit;False;1902.793;1305.054;Comment;18;544;539;474;493;545;546;549;548;478;547;487;481;550;551;552;486;477;542;Assign Colors to Color Range;1,1,1,1;0;0
-Node;AmplifyShaderEditor.RegisterLocalVarNode;543;4720,-2464;Inherit;False;ColorRangeFinal;-1;True;1;0;FLOAT;0;False;1;FLOAT;0
-Node;AmplifyShaderEditor.GetLocalVarNode;549;3423.581,-3895.288;Inherit;False;543;ColorRangeFinal;1;0;OBJECT;;False;1;FLOAT;0
-Node;AmplifyShaderEditor.RangedFloatNode;478;3466.304,-3767.421;Inherit;False;Property;_Color_3_Full;Color_3_Full;8;0;Create;True;0;0;0;False;0;False;0.3752641;0.914;0;1;0;1;FLOAT;0
-Node;AmplifyShaderEditor.RangedFloatNode;493;3993.025,-4069.014;Inherit;False;Property;_Color_3_Start;Color_3_Start;7;0;Create;True;0;0;0;False;0;False;0;0.577;0;1;0;1;FLOAT;0
-Node;AmplifyShaderEditor.TFHCRemapNode;552;3452.645,-3639.906;Inherit;False;5;0;FLOAT;0;False;1;FLOAT;0;False;2;FLOAT;1;False;3;FLOAT;0;False;4;FLOAT;1;False;1;FLOAT;0
-Node;AmplifyShaderEditor.RangedFloatNode;486;4672.028,-4351.989;Inherit;False;Property;_Color_2_Start;Color_2_Start;6;0;Create;True;0;0;0;False;0;False;0.3752641;0;0;1;0;1;FLOAT;0
-Node;AmplifyShaderEditor.GetLocalVarNode;546;4143.534,-4192.698;Inherit;False;543;ColorRangeFinal;1;0;OBJECT;;False;1;FLOAT;0
-Node;AmplifyShaderEditor.TFHCRemapNode;481;4279.98,-3859.479;Inherit;False;5;0;FLOAT;0;False;1;FLOAT;0;False;2;FLOAT;1;False;3;FLOAT;0;False;4;FLOAT;1;False;1;FLOAT;0
-Node;AmplifyShaderEditor.SaturateNode;551;3659.645,-3571.033;Inherit;False;1;0;FLOAT;0;False;1;FLOAT;0
-Node;AmplifyShaderEditor.ColorNode;542;3568.159,-3399.088;Inherit;False;Property;_Color3;Color 3;5;1;[HDR];Create;True;0;0;0;False;0;False;0,0,0,0;0,1.190095,12.62823,0;True;True;0;6;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4;FLOAT3;5
-Node;AmplifyShaderEditor.ColorNode;477;3963.667,-3956.063;Inherit;False;Property;_Color_2;Color_2;4;1;[HDR];Create;True;0;0;0;False;0;False;0,0,0,0;0,0.3266658,3.670186,0;True;True;0;6;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4;FLOAT3;5
-Node;AmplifyShaderEditor.SaturateNode;487;4475.653,-3803.349;Inherit;False;1;0;FLOAT;0;False;1;FLOAT;0
-Node;AmplifyShaderEditor.LerpOp;550;3881.279,-3586.405;Inherit;False;3;0;COLOR;0,0,0,0;False;1;COLOR;0,0,0,0;False;2;FLOAT;0;False;1;COLOR;0
-Node;AmplifyShaderEditor.ColorNode;474;4380.523,-4346.877;Inherit;False;Property;_Color_1;Color_1;3;1;[HDR];Create;True;0;0;0;False;0;False;0,0,0,0;0,0,0,0;True;True;0;6;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4;FLOAT3;5
-Node;AmplifyShaderEditor.Compare;548;4183.793,-3575.278;Inherit;False;4;4;0;FLOAT;0;False;1;FLOAT;0;False;2;COLOR;0,0,0,0;False;3;COLOR;0,0,0,0;False;1;COLOR;0
-Node;AmplifyShaderEditor.LerpOp;547;4625.079,-3944.732;Inherit;False;3;0;COLOR;0,0,0,0;False;1;COLOR;0,0,0,0;False;2;FLOAT;0;False;1;COLOR;0
-Node;AmplifyShaderEditor.GetLocalVarNode;544;4771.35,-4456.527;Inherit;False;543;ColorRangeFinal;1;0;OBJECT;;False;1;FLOAT;0
-Node;AmplifyShaderEditor.Compare;545;4834.554,-4041.198;Inherit;False;4;4;0;FLOAT;0;False;1;FLOAT;0;False;2;COLOR;0,0,0,0;False;3;COLOR;0,0,0,0;False;1;COLOR;0
-Node;AmplifyShaderEditor.RangedFloatNode;415;4770.914,-2275.438;Inherit;False;Property;_ShowMaster;ShowMaster;1;0;Create;True;0;0;0;False;0;False;1;0.3950119;0;1;0;1;FLOAT;0
-Node;AmplifyShaderEditor.Compare;539;5127.438,-4134.998;Inherit;False;4;4;0;FLOAT;0;False;1;FLOAT;0;False;2;COLOR;0,0,0,0;False;3;COLOR;0,0,0,0;False;1;COLOR;0
-Node;AmplifyShaderEditor.SimpleMultiplyOpNode;404;5264,-2544;Inherit;False;2;2;0;COLOR;0,0,0,0;False;1;FLOAT;0;False;1;COLOR;0
-Node;AmplifyShaderEditor.CommentaryNode;313;-3369.373,-2323.563;Inherit;False;2078.093;937.7032;Get any angle on the circle;14;204;252;254;253;225;421;117;120;226;222;223;221;56;203;Angle;1,1,1,1;0;0
-Node;AmplifyShaderEditor.CommentaryNode;422;-977.5175,-2282.62;Inherit;False;1776.722;868.4512;Comment;26;236;268;423;424;425;427;428;429;430;434;449;450;426;452;453;455;456;457;459;463;433;568;567;569;570;589;Radial Wobble;1,1,1,1;0;0
-Node;AmplifyShaderEditor.CommentaryNode;498;-1024,-3280;Inherit;False;1745.463;514.3179;Comment;12;445;441;447;438;446;443;435;448;444;436;437;497;RadialOffsetOverlay;1,1,1,1;0;0
-Node;AmplifyShaderEditor.CommentaryNode;338;1243.362,-2475.183;Inherit;False;2486.851;784.7704;Comment;12;485;484;483;320;394;322;323;324;325;533;575;576;Ring Texture;1,1,1,1;0;0
-Node;AmplifyShaderEditor.CommentaryNode;554;3203.572,-678.9767;Inherit;False;1745.463;514.3179;Comment;12;566;565;564;563;562;561;560;559;558;557;556;555;BackTextureColorRangeOverlay;1,1,1,1;0;0
-Node;AmplifyShaderEditor.RangedFloatNode;592;4848,-1904;Inherit;False;Property;_Float0;Float 0;0;0;Create;True;0;0;0;False;0;False;1;0.3950119;0;1;0;1;FLOAT;0
-Node;AmplifyShaderEditor.DotProductOpNode;590;5024,-2096;Inherit;False;2;0;COLOR;0,0,0,0;False;1;COLOR;1,1,1,0;False;1;FLOAT;0
-Node;AmplifyShaderEditor.PosVertexDataNode;203;-3342.449,-1853.062;Inherit;False;0;0;5;FLOAT3;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
-Node;AmplifyShaderEditor.DynamicAppendNode;56;-3110.821,-1813.263;Inherit;False;FLOAT2;4;0;FLOAT;0;False;1;FLOAT;0;False;2;FLOAT;0;False;3;FLOAT;0;False;1;FLOAT2;0
-Node;AmplifyShaderEditor.NormalizeNode;120;-2830.977,-1777.484;Inherit;False;False;1;0;FLOAT2;0,0;False;1;FLOAT2;0
-Node;AmplifyShaderEditor.BreakToComponentsNode;221;-2676.811,-1911.063;Inherit;False;FLOAT2;1;0;FLOAT2;0,0;False;16;FLOAT;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4;FLOAT;5;FLOAT;6;FLOAT;7;FLOAT;8;FLOAT;9;FLOAT;10;FLOAT;11;FLOAT;12;FLOAT;13;FLOAT;14;FLOAT;15
-Node;AmplifyShaderEditor.Vector2Node;421;-2871.026,-1668.308;Inherit;False;Constant;_SeamVector;SeamVector;33;0;Create;True;0;0;0;False;0;False;0,1;0,0;0;3;FLOAT2;0;FLOAT;1;FLOAT;2
-Node;AmplifyShaderEditor.SimpleMultiplyOpNode;223;-2483.936,-1945.756;Inherit;False;2;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
-Node;AmplifyShaderEditor.SimpleMultiplyOpNode;222;-2486.343,-2104.077;Inherit;False;3;3;0;FLOAT;0;False;1;FLOAT;1;False;2;FLOAT;0;False;1;FLOAT;0
-Node;AmplifyShaderEditor.SimpleSubtractOpNode;226;-2274.735,-2054.011;Inherit;False;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
-Node;AmplifyShaderEditor.DotProductOpNode;117;-2601.2,-1674.143;Inherit;True;2;0;FLOAT2;0,1;False;1;FLOAT2;0,1;False;1;FLOAT;0
-Node;AmplifyShaderEditor.PiNode;254;-2144.551,-1604.372;Inherit;False;1;0;FLOAT;1;False;1;FLOAT;0
-Node;AmplifyShaderEditor.ATan2OpNode;225;-2045.943,-1852.979;Inherit;False;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
-Node;AmplifyShaderEditor.PiNode;253;-2126.253,-1701.049;Inherit;False;1;0;FLOAT;-1;False;1;FLOAT;0
-Node;AmplifyShaderEditor.SimpleTimeNode;461;-899.1671,-1306.057;Inherit;False;1;0;FLOAT;1;False;1;FLOAT;0
-Node;AmplifyShaderEditor.RangedFloatNode;268;-1020.216,-1537.555;Inherit;False;Property;_RingSwingSpeed;RingSwingSpeed;11;0;Create;True;0;0;0;False;0;False;0;2;0;2;0;1;FLOAT;0
-Node;AmplifyShaderEditor.TFHCRemapNode;252;-1868.283,-1717.597;Inherit;False;5;0;FLOAT;0;False;1;FLOAT;0;False;2;FLOAT;1;False;3;FLOAT;0;False;4;FLOAT;1;False;1;FLOAT;0
-Node;AmplifyShaderEditor.SimpleMultiplyOpNode;460;-703.1621,-1434.31;Inherit;False;2;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
-Node;AmplifyShaderEditor.GetLocalVarNode;443;-960,-3216;Inherit;False;345;Vertex Distance From Center Relative;1;0;OBJECT;;False;1;FLOAT;0
-Node;AmplifyShaderEditor.RangedFloatNode;448;-976,-3136;Inherit;False;Property;_RingWobbleOverlayFrequency;RingWobbleOverlayFrequency;19;0;Create;True;0;0;0;False;0;False;0;1.09;0;10;0;1;FLOAT;0
-Node;AmplifyShaderEditor.RangedFloatNode;444;-976,-3056;Inherit;False;Property;_RingWobbleOverlayOffset;RingWobbleOverlayOffset;18;0;Create;True;0;0;0;False;0;False;0;0;0;1;0;1;FLOAT;0
-Node;AmplifyShaderEditor.RegisterLocalVarNode;204;-1659.488,-1718.449;Inherit;False;angle;-1;True;1;0;FLOAT;0;False;1;FLOAT;0
-Node;AmplifyShaderEditor.SimpleAddOpNode;463;-541.1423,-1583.758;Inherit;False;2;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
-Node;AmplifyShaderEditor.GetLocalVarNode;456;-952.5039,-1817.438;Inherit;False;204;angle;1;0;OBJECT;;False;1;FLOAT;0
-Node;AmplifyShaderEditor.SimpleMultiplyOpNode;447;-608,-3072;Inherit;False;2;2;0;FLOAT;0;False;1;FLOAT;2;False;1;FLOAT;0
-Node;AmplifyShaderEditor.SimpleMultiplyOpNode;446;-608,-2944;Inherit;False;2;2;0;FLOAT;0;False;1;FLOAT;2;False;1;FLOAT;0
-Node;AmplifyShaderEditor.RangedFloatNode;464;-498.9105,-1401.459;Inherit;False;Property;_RingSwingExtraWobble;RingSwingExtraWobble;13;0;Create;True;0;0;0;False;0;False;0;0.279;-1;1;0;1;FLOAT;0
-Node;AmplifyShaderEditor.SimpleAddOpNode;438;-432,-2976;Inherit;False;2;2;0;FLOAT;0;False;1;FLOAT;1;False;1;FLOAT;0
-Node;AmplifyShaderEditor.SimpleMultiplyOpNode;465;-60.62122,-1363.952;Inherit;False;2;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
-Node;AmplifyShaderEditor.SimpleAddOpNode;434;-570.7148,-1612.694;Inherit;False;2;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
-Node;AmplifyShaderEditor.PiNode;441;-240,-3024;Inherit;False;1;0;FLOAT;1;False;1;FLOAT;0
-Node;AmplifyShaderEditor.DynamicAppendNode;453;-419.1515,-1665.537;Inherit;False;FLOAT2;4;0;FLOAT;0;False;1;FLOAT;0;False;2;FLOAT;0;False;3;FLOAT;0;False;1;FLOAT2;0
-Node;AmplifyShaderEditor.SinOpNode;436;-80,-3104;Inherit;False;1;0;FLOAT;0;False;1;FLOAT;0
-Node;AmplifyShaderEditor.SamplerNode;452;-244.044,-1644.037;Inherit;True;Property;_RingSwingTex;RingSwingTex;10;0;Create;True;0;0;0;False;0;False;-1;None;264241ef8deb3464abcd1ef777458a09;True;0;False;white;Auto;False;Object;-1;Auto;Texture2D;8;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;6;FLOAT;0;False;7;SAMPLERSTATE;;False;6;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4;FLOAT3;5
-Node;AmplifyShaderEditor.SimpleAddOpNode;445;112,-3120;Inherit;False;2;2;0;FLOAT;0;False;1;FLOAT;1;False;1;FLOAT;0
-Node;AmplifyShaderEditor.RangedFloatNode;497;16,-2928;Inherit;False;Property;_RingWobbleOverlayStrength;RingWobbleOverlayStrength;17;0;Create;True;0;0;0;False;0;False;0;1.274;0;2;0;1;FLOAT;0
-Node;AmplifyShaderEditor.SimpleAddOpNode;567;94.50217,-1604.436;Inherit;False;3;3;0;FLOAT;0;False;1;FLOAT;0;False;2;FLOAT;0;False;1;FLOAT;0
-Node;AmplifyShaderEditor.PiNode;325;1467.395,-2028.206;Inherit;False;1;0;FLOAT;2;False;1;FLOAT;0
-Node;AmplifyShaderEditor.SimpleTimeNode;323;1475.781,-2186.292;Inherit;False;1;0;FLOAT;1;False;1;FLOAT;0
-Node;AmplifyShaderEditor.RangedFloatNode;322;1342.191,-2325.309;Inherit;False;Property;_RingTexRotation;RingTexRotation;9;0;Create;True;0;0;0;False;0;False;0;1.69;-3;3;0;1;FLOAT;0
-Node;AmplifyShaderEditor.SimpleMultiplyOpNode;437;304,-3040;Inherit;False;3;3;0;FLOAT;0;False;1;FLOAT;0.5;False;2;FLOAT;0;False;1;FLOAT;0
-Node;AmplifyShaderEditor.SimpleDivideOpNode;568;231.3088,-1577.469;Inherit;False;2;0;FLOAT;0;False;1;FLOAT;3;False;1;FLOAT;0
-Node;AmplifyShaderEditor.RangedFloatNode;433;31.53173,-1736.961;Inherit;False;Property;_RingSwingStrength;RingSwingStrength;12;0;Create;True;0;0;0;False;0;False;0;0.065;-1;1;0;1;FLOAT;0
-Node;AmplifyShaderEditor.SimpleMultiplyOpNode;324;1835.299,-2168.166;Inherit;False;3;3;0;FLOAT;0;False;1;FLOAT;0;False;2;FLOAT;0;False;1;FLOAT;0
-Node;AmplifyShaderEditor.RegisterLocalVarNode;435;432,-2864;Inherit;False;WobbleRadiusMulti;-1;True;1;0;FLOAT;0;False;1;FLOAT;0
-Node;AmplifyShaderEditor.SimpleMultiplyOpNode;459;378.039,-1733.863;Inherit;False;2;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
-Node;AmplifyShaderEditor.SimpleAddOpNode;394;2064.694,-2154.154;Inherit;False;2;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
-Node;AmplifyShaderEditor.SimpleMultiplyOpNode;589;564.6313,-1892.443;Inherit;False;2;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
-Node;AmplifyShaderEditor.RotatorNode;320;2182.084,-2387.076;Inherit;False;3;0;FLOAT2;0,0;False;1;FLOAT2;0.5,0.5;False;2;FLOAT;1;False;1;FLOAT2;0
-Node;AmplifyShaderEditor.AbsOpNode;588;857.0254,-1799.964;Inherit;False;1;0;FLOAT;0;False;1;FLOAT;0
-Node;AmplifyShaderEditor.AbsOpNode;587;838.9653,-1703.989;Inherit;False;1;0;FLOAT;0;False;1;FLOAT;0
-Node;AmplifyShaderEditor.BreakToComponentsNode;483;2752.657,-2303.388;Inherit;False;COLOR;1;0;COLOR;0,0,0,0;False;16;FLOAT;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4;FLOAT;5;FLOAT;6;FLOAT;7;FLOAT;8;FLOAT;9;FLOAT;10;FLOAT;11;FLOAT;12;FLOAT;13;FLOAT;14;FLOAT;15
-Node;AmplifyShaderEditor.SimpleAddOpNode;584;992.5189,-1723.29;Inherit;False;2;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
-Node;AmplifyShaderEditor.RangedFloatNode;571;873.5425,-1482.456;Inherit;False;Property;_RingSwingColorRangeBoost;RingSwingColorRangeBoost;20;0;Create;True;0;0;0;False;0;False;0;0.77;0;0;0;1;FLOAT;0
-Node;AmplifyShaderEditor.SimpleAddOpNode;484;2872.37,-2297.5;Inherit;False;3;3;0;FLOAT;0;False;1;FLOAT;0;False;2;FLOAT;0;False;1;FLOAT;0
-Node;AmplifyShaderEditor.SimpleMultiplyOpNode;572;1127.891,-1585.509;Inherit;False;2;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
-Node;AmplifyShaderEditor.SimpleDivideOpNode;485;3028.132,-2288.589;Inherit;False;2;0;FLOAT;0;False;1;FLOAT;3;False;1;FLOAT;0
-Node;AmplifyShaderEditor.RegisterLocalVarNode;573;1308.685,-1658.175;Inherit;False;RadialSwingColorRangeBoost;-1;True;1;0;FLOAT;0;False;1;FLOAT;0
-Node;AmplifyShaderEditor.GetLocalVarNode;575;3201.716,-1955.027;Inherit;False;573;RadialSwingColorRangeBoost;1;0;OBJECT;;False;1;FLOAT;0
-Node;AmplifyShaderEditor.TFHCRemapNode;533;3369.525,-2323.383;Inherit;False;5;0;FLOAT;0;False;1;FLOAT;0;False;2;FLOAT;1;False;3;FLOAT;0;False;4;FLOAT;1;False;1;FLOAT;0
-Node;AmplifyShaderEditor.SimpleMultiplyOpNode;576;3588.246,-2104.32;Inherit;False;2;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
-Node;AmplifyShaderEditor.SimpleAddOpNode;577;3779.453,-2257.76;Inherit;False;2;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
-Node;AmplifyShaderEditor.SaturateNode;534;3940.964,-2178.206;Inherit;False;1;0;FLOAT;0;False;1;FLOAT;0
-Node;AmplifyShaderEditor.RangedFloatNode;427;-898.5199,-2137.362;Inherit;False;Property;_RingWobbleSpeed;RingWobbleSpeed;16;0;Create;True;0;0;0;False;0;False;0;0.279;0;1;0;1;FLOAT;0
-Node;AmplifyShaderEditor.SimpleTimeNode;450;-832.3965,-2007.45;Inherit;False;1;0;FLOAT;1;False;1;FLOAT;0
-Node;AmplifyShaderEditor.SimpleMultiplyOpNode;455;-602.2534,-2007.986;Inherit;False;2;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
-Node;AmplifyShaderEditor.GetLocalVarNode;423;-608.5024,-2215.792;Inherit;False;204;angle;1;0;OBJECT;;False;1;FLOAT;0
-Node;AmplifyShaderEditor.SimpleAddOpNode;457;-456.118,-2087.086;Inherit;False;2;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
-Node;AmplifyShaderEditor.DynamicAppendNode;425;-331.6449,-2220.342;Inherit;False;FLOAT2;4;0;FLOAT;0;False;1;FLOAT;0;False;2;FLOAT;0;False;3;FLOAT;0;False;1;FLOAT2;0
-Node;AmplifyShaderEditor.SamplerNode;424;-183.242,-2246.795;Inherit;True;Property;_RingWobbleTex;RingWobbleTex;15;0;Create;True;0;0;0;False;0;False;-1;None;None;True;0;False;white;Auto;False;Object;-1;Auto;Texture2D;8;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;6;FLOAT;0;False;7;SAMPLERSTATE;;False;6;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4;FLOAT3;5
-Node;AmplifyShaderEditor.SimpleAddOpNode;570;129.6375,-2243.891;Inherit;False;3;3;0;FLOAT;0;False;1;FLOAT;0;False;2;FLOAT;0;False;1;FLOAT;0
-Node;AmplifyShaderEditor.PosVertexDataNode;428;-390.2453,-1927.186;Inherit;False;0;0;5;FLOAT3;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
-Node;AmplifyShaderEditor.SimpleDivideOpNode;569;251.1496,-2236.224;Inherit;False;2;0;FLOAT;0;False;1;FLOAT;3;False;1;FLOAT;0
-Node;AmplifyShaderEditor.RangedFloatNode;236;36.81185,-2015.868;Inherit;False;Property;_RingWobbleStrength;RingWobbleStrength;14;0;Create;True;0;0;0;False;0;False;0;0.08;-1;1;0;1;FLOAT;0
-Node;AmplifyShaderEditor.DynamicAppendNode;429;-152.5391,-1864.914;Inherit;False;FLOAT2;4;0;FLOAT;0;False;1;FLOAT;0;False;2;FLOAT;0;False;3;FLOAT;0;False;1;FLOAT2;0
-Node;AmplifyShaderEditor.SimpleMultiplyOpNode;426;353.7231,-2069.906;Inherit;False;2;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
-Node;AmplifyShaderEditor.NormalizeNode;430;35.22259,-1857.239;Inherit;False;False;1;0;FLOAT2;0,0;False;1;FLOAT2;0
-Node;AmplifyShaderEditor.SimpleMultiplyOpNode;449;563.5823,-2154.669;Inherit;False;2;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
-Node;AmplifyShaderEditor.SimpleMultiplyOpNode;586;801.957,-2151.988;Inherit;False;2;2;0;FLOAT;0;False;1;FLOAT2;0,0;False;1;FLOAT2;0
-Node;AmplifyShaderEditor.SimpleMultiplyOpNode;585;810.5695,-2026.885;Inherit;False;2;2;0;FLOAT2;0,0;False;1;FLOAT;0;False;1;FLOAT2;0
-Node;AmplifyShaderEditor.SimpleAddOpNode;458;973.4294,-2086.11;Inherit;False;2;2;0;FLOAT2;0,0;False;1;FLOAT2;0,0;False;1;FLOAT2;0
-Node;AmplifyShaderEditor.RegisterLocalVarNode;432;1096.841,-2085.142;Inherit;False;Radial Wobble Offset;-1;True;1;0;FLOAT2;0,0;False;1;FLOAT2;0
-Node;AmplifyShaderEditor.GetLocalVarNode;499;5546.483,-2728.759;Inherit;False;369;BackTextureColorRange;1;0;OBJECT;;False;1;FLOAT;0
-Node;AmplifyShaderEditor.SimpleAddOpNode;555;4341.25,-530.4247;Inherit;False;2;2;0;FLOAT;0;False;1;FLOAT;1;False;1;FLOAT;0
-Node;AmplifyShaderEditor.SimpleMultiplyOpNode;556;3618.249,-475.4247;Inherit;False;2;2;0;FLOAT;0;False;1;FLOAT;2;False;1;FLOAT;0
-Node;AmplifyShaderEditor.SimpleAddOpNode;557;3792.383,-383.8119;Inherit;False;2;2;0;FLOAT;0;False;1;FLOAT;1;False;1;FLOAT;0
-Node;AmplifyShaderEditor.SimpleMultiplyOpNode;558;3613.676,-345.4198;Inherit;False;2;2;0;FLOAT;0;False;1;FLOAT;2;False;1;FLOAT;0
-Node;AmplifyShaderEditor.SinOpNode;559;4145.348,-509.1497;Inherit;False;1;0;FLOAT;0;False;1;FLOAT;0
-Node;AmplifyShaderEditor.GetLocalVarNode;560;3262.832,-628.9777;Inherit;False;345;Vertex Distance From Center Relative;1;0;OBJECT;;False;1;FLOAT;0
-Node;AmplifyShaderEditor.SimpleMultiplyOpNode;562;4468.616,-461.7436;Inherit;False;3;3;0;FLOAT;0;False;1;FLOAT;0.5;False;2;FLOAT;0;False;1;FLOAT;0
-Node;AmplifyShaderEditor.PiNode;565;3952.959,-437.3436;Inherit;False;1;0;FLOAT;1;False;1;FLOAT;0
-Node;AmplifyShaderEditor.RangedFloatNode;564;3253.572,-548.8085;Inherit;False;Property;_RingTexColorRangeOverlayFrequency;RingTexColorRangeOverlayFrequency;23;0;Create;True;0;0;0;False;0;False;0;0;0;10;0;1;FLOAT;0
-Node;AmplifyShaderEditor.RangedFloatNode;561;3257.5,-459.1546;Inherit;False;Property;_RingTexColorRangeOverlayOffset;RingTexColorRangeOverlayOffset;21;0;Create;True;0;0;0;False;0;False;0;0;0;1;0;1;FLOAT;0
-Node;AmplifyShaderEditor.RangedFloatNode;566;4132.886,-349.1005;Inherit;False;Property;_RingTexColorRangeOverlayStrength;RingTexColorRangeOverlayStrength;22;0;Create;True;0;0;0;False;0;False;0;0;0;5;0;1;FLOAT;0
-Node;AmplifyShaderEditor.RegisterLocalVarNode;563;4591.283,-296.0425;Inherit;False;RingTexColorRangeOverlay;-1;True;1;0;FLOAT;0;False;1;FLOAT;0
-Node;AmplifyShaderEditor.Compare;591;5275.803,-2115.028;Inherit;False;3;4;0;FLOAT;0;False;1;FLOAT;0.1;False;2;FLOAT;1;False;3;FLOAT;0;False;1;FLOAT;0
-Node;AmplifyShaderEditor.GetLocalVarNode;530;5264,-2816;Inherit;False;573;RadialSwingColorRangeBoost;1;0;OBJECT;;False;1;FLOAT;0
-Node;AmplifyShaderEditor.GetLocalVarNode;419;5488,-2592;Inherit;False;435;WobbleRadiusMulti;1;0;OBJECT;;False;1;FLOAT;0
+Node;AmplifyShaderEditor.PosVertexDataNode;341;352,-1888;Inherit;False;0;0;5;FLOAT3;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
+Node;AmplifyShaderEditor.DynamicAppendNode;342;608,-1856;Inherit;False;FLOAT2;4;0;FLOAT;0;False;1;FLOAT;0;False;2;FLOAT;0;False;3;FLOAT;0;False;1;FLOAT2;0
+Node;AmplifyShaderEditor.LengthOpNode;343;848,-1840;Inherit;False;1;0;FLOAT2;0,0;False;1;FLOAT;0
+Node;AmplifyShaderEditor.RangedFloatNode;415;3520,-112;Inherit;False;Property;_ShowMaster;ShowMaster;0;0;Create;True;0;0;0;False;0;False;1;0.3950119;0;1;0;1;FLOAT;0
+Node;AmplifyShaderEditor.SimpleMultiplyOpNode;404;3824,-144;Inherit;False;2;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
+Node;AmplifyShaderEditor.ColorNode;595;2976,-1200;Inherit;False;Property;_TextureColorA;TextureColorA;1;1;[HDR];Create;True;0;0;0;False;0;False;0,0,0,0;0,0,0,0;True;True;0;6;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4;FLOAT3;5
+Node;AmplifyShaderEditor.ColorNode;596;2976,-960;Inherit;False;Property;_TextureColorB;TextureColorB;2;1;[HDR];Create;True;0;0;0;False;0;False;0,0,0,0;0,0.3266658,3.670186,0;True;True;0;6;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4;FLOAT3;5
+Node;AmplifyShaderEditor.LerpOp;594;3392,-848;Inherit;False;3;0;COLOR;0,0,0,0;False;1;COLOR;0,0,0,0;False;2;FLOAT;0;False;1;COLOR;0
+Node;AmplifyShaderEditor.RegisterLocalVarNode;369;2832,-688;Inherit;False;TextureValueRemaped;-1;True;1;0;FLOAT;0;False;1;FLOAT;0
+Node;AmplifyShaderEditor.RegisterLocalVarNode;345;1072,-1904;Inherit;False;VertexDistanceFromCenter;-1;True;1;0;FLOAT;0;False;1;FLOAT;0
 Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;85;405.8675,373.4758;Float;False;False;-1;2;UnityEditor.ShaderGraphUnlitGUI;0;13;New Amplify Shader;2992e84f91cbeb14eab234972e07ea9d;True;ShadowCaster;0;2;ShadowCaster;0;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;True;0;False;;False;False;False;False;False;False;False;False;False;True;False;0;False;;255;False;;255;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;False;False;False;False;True;4;RenderPipeline=UniversalPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;UniversalMaterialType=Unlit;True;5;True;12;all;0;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;False;False;True;False;False;False;False;0;False;;False;False;False;False;False;False;False;False;False;True;1;False;;True;3;False;;False;True;1;LightMode=ShadowCaster;False;False;0;;0;0;Standard;0;False;0
 Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;86;405.8675,373.4758;Float;False;False;-1;2;UnityEditor.ShaderGraphUnlitGUI;0;13;New Amplify Shader;2992e84f91cbeb14eab234972e07ea9d;True;DepthOnly;0;3;DepthOnly;0;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;True;0;False;;False;False;False;False;False;False;False;False;False;True;False;0;False;;255;False;;255;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;False;False;False;False;True;4;RenderPipeline=UniversalPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;UniversalMaterialType=Unlit;True;5;True;12;all;0;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;False;False;True;False;False;False;False;0;False;;False;False;False;False;False;False;False;False;False;True;1;False;;False;False;True;1;LightMode=DepthOnly;False;False;0;;0;0;Standard;0;False;0
 Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;87;405.8675,373.4758;Float;False;False;-1;2;UnityEditor.ShaderGraphUnlitGUI;0;13;New Amplify Shader;2992e84f91cbeb14eab234972e07ea9d;True;Meta;0;4;Meta;0;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;True;0;False;;False;False;False;False;False;False;False;False;False;True;False;0;False;;255;False;;255;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;False;False;False;False;True;4;RenderPipeline=UniversalPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;UniversalMaterialType=Unlit;True;5;True;12;all;0;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;2;False;;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;1;LightMode=Meta;False;False;0;;0;0;Standard;0;False;0
@@ -2392,199 +2084,42 @@ Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;91;405.8675,373.4758;Float;
 Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;92;405.8675,373.4758;Float;False;False;-1;2;UnityEditor.ShaderGraphUnlitGUI;0;13;New Amplify Shader;2992e84f91cbeb14eab234972e07ea9d;True;DepthNormalsOnly;0;9;DepthNormalsOnly;0;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;True;0;False;;False;False;False;False;False;False;False;False;False;True;False;0;False;;255;False;;255;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;False;False;False;False;True;4;RenderPipeline=UniversalPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;UniversalMaterialType=Unlit;True;5;True;12;all;0;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;1;False;;True;3;False;;False;True;1;LightMode=DepthNormalsOnly;False;True;9;d3d11;metal;vulkan;xboxone;xboxseries;playstation;ps4;ps5;switch;0;;0;0;Standard;0;False;0
 Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;83;1328.477,1909.457;Float;False;False;-1;2;UnityEditor.ShaderGraphUnlitGUI;0;13;New Amplify Shader;2992e84f91cbeb14eab234972e07ea9d;True;ExtraPrePass;0;0;ExtraPrePass;5;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;True;0;False;;False;False;False;False;False;False;False;False;False;True;False;0;False;;255;False;;255;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;False;False;False;False;True;4;RenderPipeline=UniversalPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;UniversalMaterialType=Unlit;True;5;True;12;all;0;False;True;1;1;False;;0;False;;0;1;False;;0;False;;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;True;True;True;True;True;0;False;;False;False;False;False;False;False;False;True;False;0;False;;255;False;;255;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;False;True;1;False;;True;3;False;;True;True;0;False;;0;False;;True;0;False;False;0;;0;0;Standard;0;False;0
 Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;593;5408.448,-2227.232;Float;False;False;-1;2;UnityEditor.ShaderGraphUnlitGUI;0;1;New Amplify Shader;2992e84f91cbeb14eab234972e07ea9d;True;MotionVectors;0;10;MotionVectors;0;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;True;0;False;;False;False;False;False;False;False;False;False;False;True;False;0;False;;255;False;;255;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;False;False;False;False;True;4;RenderPipeline=UniversalPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;UniversalMaterialType=Unlit;True;5;True;12;all;0;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;True;True;False;False;0;False;;False;False;False;False;False;False;False;False;False;False;False;False;True;1;LightMode=MotionVectors;False;False;0;;0;0;Standard;0;False;0
-Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;84;5488,-2304;Float;False;True;-1;2;UnityEditor.ShaderGraphUnlitGUI;0;13;ThrusterCoreTiled;2992e84f91cbeb14eab234972e07ea9d;True;Forward;0;1;Forward;8;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;True;0;False;;False;False;False;False;False;False;False;False;False;True;False;0;False;;255;False;;255;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;False;False;False;False;True;4;RenderPipeline=UniversalPipeline;RenderType=Transparent=RenderType;Queue=Transparent=Queue=0;UniversalMaterialType=Unlit;True;5;True;12;all;0;True;True;1;5;False;;10;False;;2;5;False;;10;False;;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;True;True;True;True;0;False;;False;False;False;False;False;False;False;True;False;0;False;;255;False;;255;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;False;True;2;False;;True;3;False;;True;True;0;False;;0;False;;True;1;LightMode=UniversalForwardOnly;False;False;0;;0;0;Standard;24;Surface;1;638457958538089060;  Blend;0;0;Two Sided;1;0;Forward Only;0;0;Cast Shadows;1;0;  Use Shadow Threshold;0;0;Receive Shadows;1;0;Motion Vectors;1;0;  Add Precomputed Velocity;0;0;GPU Instancing;1;0;LOD CrossFade;1;0;Built-in Fog;1;0;Meta Pass;0;0;Extra Pre Pass;0;0;Tessellation;0;0;  Phong;0;0;  Strength;0.5,False,;0;  Type;0;0;  Tess;16,False,;0;  Min;10,False,;0;  Max;25,False,;0;  Edge Length;16,False,;0;  Max Displacement;25,False,;0;Vertex Position,InvertActionOnDeselection;1;0;0;11;False;True;True;True;False;False;True;True;True;False;True;False;;False;0
-WireConnection;379;0;380;0
-WireConnection;342;0;341;1
-WireConnection;342;1;341;3
+Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;84;3696,-608;Float;False;True;-1;2;UnityEditor.ShaderGraphUnlitGUI;0;13;ThrusterCoreTiled;2992e84f91cbeb14eab234972e07ea9d;True;Forward;0;1;Forward;8;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;True;2;False;;False;False;False;False;False;False;False;False;False;True;False;0;False;;255;False;;255;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;False;False;False;False;True;4;RenderPipeline=UniversalPipeline;RenderType=Transparent=RenderType;Queue=Transparent=Queue=0;UniversalMaterialType=Unlit;True;5;True;12;all;0;True;True;1;5;False;;10;False;;2;5;False;;10;False;;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;True;True;True;True;0;False;;False;False;False;False;False;False;False;True;False;0;False;;255;False;;255;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;False;True;2;False;;True;3;False;;True;True;0;False;;0;False;;True;1;LightMode=UniversalForwardOnly;False;False;0;;0;0;Standard;24;Surface;1;638457958538089060;  Blend;0;0;Two Sided;0;638615979616428396;Forward Only;0;0;Cast Shadows;1;0;  Use Shadow Threshold;0;0;Receive Shadows;1;0;Motion Vectors;1;0;  Add Precomputed Velocity;0;0;GPU Instancing;1;0;LOD CrossFade;1;0;Built-in Fog;1;0;Meta Pass;0;0;Extra Pre Pass;0;0;Tessellation;0;0;  Phong;0;0;  Strength;0.5,False,;0;  Type;0;0;  Tess;16,False,;0;  Min;10,False,;0;  Max;25,False,;0;  Edge Length;16,False,;0;  Max Displacement;25,False,;0;Vertex Position,InvertActionOnDeselection;1;0;0;11;False;True;True;True;False;False;True;True;True;False;True;False;;False;0
+WireConnection;501;0;504;0
 WireConnection;376;0;50;0
 WireConnection;376;1;379;0
 WireConnection;375;0;379;0
 WireConnection;375;1;49;0
-WireConnection;343;0;342;0
-WireConnection;417;0;50;0
-WireConnection;417;1;376;0
-WireConnection;418;0;375;0
-WireConnection;418;1;49;0
-WireConnection;501;0;504;0
-WireConnection;344;0;343;0
-WireConnection;344;1;340;0
 WireConnection;502;0;501;0
-WireConnection;377;0;418;0
-WireConnection;377;1;417;0
-WireConnection;345;0;344;0
-WireConnection;582;0;581;0
+WireConnection;377;0;376;0
+WireConnection;377;1;375;0
 WireConnection;503;0;502;0
 WireConnection;503;1;377;0
+WireConnection;582;0;581;0
 WireConnection;378;0;504;0
 WireConnection;378;1;503;0
 WireConnection;583;0;582;0
-WireConnection;520;0;523;0
-WireConnection;520;1;527;0
-WireConnection;522;0;526;0
 WireConnection;580;1;583;0
 WireConnection;580;3;378;0
-WireConnection;521;0;520;0
-WireConnection;521;1;522;0
 WireConnection;38;1;580;0
 WireConnection;509;0;38;1
 WireConnection;509;1;38;2
 WireConnection;509;2;38;3
-WireConnection;519;0;521;0
 WireConnection;508;0;509;0
-WireConnection;524;0;519;0
 WireConnection;511;0;508;0
 WireConnection;511;1;473;1
 WireConnection;511;2;473;2
-WireConnection;518;0;524;0
 WireConnection;512;0;511;0
-WireConnection;517;0;518;0
-WireConnection;517;2;525;0
-WireConnection;516;0;517;0
-WireConnection;369;0;512;0
-WireConnection;532;0;531;0
-WireConnection;532;1;513;0
-WireConnection;535;0;532;0
-WireConnection;514;1;535;0
-WireConnection;538;0;514;0
-WireConnection;543;0;538;0
-WireConnection;552;0;549;0
-WireConnection;552;1;493;0
-WireConnection;552;2;478;0
-WireConnection;481;0;546;0
-WireConnection;481;1;486;0
-WireConnection;481;2;493;0
-WireConnection;551;0;552;0
-WireConnection;487;0;481;0
-WireConnection;550;0;477;0
-WireConnection;550;1;542;0
-WireConnection;550;2;551;0
-WireConnection;548;0;549;0
-WireConnection;548;1;478;0
-WireConnection;548;2;550;0
-WireConnection;548;3;542;0
-WireConnection;547;0;474;0
-WireConnection;547;1;477;0
-WireConnection;547;2;487;0
-WireConnection;545;0;546;0
-WireConnection;545;1;493;0
-WireConnection;545;2;547;0
-WireConnection;545;3;548;0
-WireConnection;539;0;544;0
-WireConnection;539;1;486;0
-WireConnection;539;2;474;0
-WireConnection;539;3;545;0
-WireConnection;404;0;539;0
+WireConnection;342;0;341;1
+WireConnection;342;1;341;3
+WireConnection;343;0;342;0
 WireConnection;404;1;415;0
-WireConnection;590;0;404;0
-WireConnection;56;0;203;1
-WireConnection;56;1;203;3
-WireConnection;120;0;56;0
-WireConnection;221;0;120;0
-WireConnection;223;0;221;1
-WireConnection;223;1;421;1
-WireConnection;222;0;221;0
-WireConnection;222;2;421;2
-WireConnection;226;0;222;0
-WireConnection;226;1;223;0
-WireConnection;117;0;120;0
-WireConnection;117;1;421;0
-WireConnection;225;0;226;0
-WireConnection;225;1;117;0
-WireConnection;252;0;225;0
-WireConnection;252;1;253;0
-WireConnection;252;2;254;0
-WireConnection;460;0;268;0
-WireConnection;460;1;461;0
-WireConnection;204;0;252;0
-WireConnection;463;0;268;0
-WireConnection;463;1;460;0
-WireConnection;447;0;443;0
-WireConnection;447;1;448;0
-WireConnection;446;0;444;0
-WireConnection;438;0;447;0
-WireConnection;438;1;446;0
-WireConnection;465;0;464;0
-WireConnection;465;1;461;0
-WireConnection;434;0;456;0
-WireConnection;434;1;463;0
-WireConnection;441;0;438;0
-WireConnection;453;0;434;0
-WireConnection;453;1;465;0
-WireConnection;436;0;441;0
-WireConnection;452;1;453;0
-WireConnection;445;0;436;0
-WireConnection;567;0;452;1
-WireConnection;567;1;452;2
-WireConnection;567;2;452;3
-WireConnection;437;0;445;0
-WireConnection;437;2;497;0
-WireConnection;568;0;567;0
-WireConnection;324;0;322;0
-WireConnection;324;1;325;0
-WireConnection;324;2;323;0
-WireConnection;435;0;437;0
-WireConnection;459;0;433;0
-WireConnection;459;1;568;0
-WireConnection;394;0;324;0
-WireConnection;589;0;435;0
-WireConnection;589;1;459;0
-WireConnection;320;2;394;0
-WireConnection;588;0;589;0
-WireConnection;587;0;459;0
-WireConnection;584;0;588;0
-WireConnection;584;1;587;0
-WireConnection;484;0;483;0
-WireConnection;484;1;483;1
-WireConnection;484;2;483;2
-WireConnection;572;0;584;0
-WireConnection;572;1;571;0
-WireConnection;485;0;484;0
-WireConnection;573;0;572;0
-WireConnection;533;0;485;0
-WireConnection;576;0;533;0
-WireConnection;576;1;575;0
-WireConnection;577;0;533;0
-WireConnection;577;1;576;0
-WireConnection;534;0;577;0
-WireConnection;455;0;427;0
-WireConnection;455;1;450;0
-WireConnection;457;0;427;0
-WireConnection;457;1;455;0
-WireConnection;425;0;423;0
-WireConnection;425;1;457;0
-WireConnection;424;1;425;0
-WireConnection;570;0;424;1
-WireConnection;570;1;424;2
-WireConnection;570;2;424;3
-WireConnection;569;0;570;0
-WireConnection;429;0;428;1
-WireConnection;429;1;428;3
-WireConnection;426;0;569;0
-WireConnection;426;1;236;0
-WireConnection;430;0;429;0
-WireConnection;449;0;435;0
-WireConnection;449;1;426;0
-WireConnection;586;0;449;0
-WireConnection;586;1;430;0
-WireConnection;585;0;430;0
-WireConnection;585;1;589;0
-WireConnection;458;0;586;0
-WireConnection;458;1;585;0
-WireConnection;432;0;458;0
-WireConnection;555;0;559;0
-WireConnection;556;0;560;0
-WireConnection;556;1;564;0
-WireConnection;557;0;556;0
-WireConnection;557;1;558;0
-WireConnection;558;0;561;0
-WireConnection;559;0;565;0
-WireConnection;562;0;555;0
-WireConnection;562;2;566;0
-WireConnection;565;0;557;0
-WireConnection;563;0;562;0
-WireConnection;591;0;590;0
-WireConnection;591;1;592;0
-WireConnection;84;2;404;0
-WireConnection;84;3;591;0
+WireConnection;594;0;595;0
+WireConnection;594;1;596;0
+WireConnection;594;2;369;0
+WireConnection;369;0;512;0
+WireConnection;345;0;343;0
+WireConnection;84;2;594;0
+WireConnection;84;3;369;0
 ASEEND*/
-//CHKSM=DE09D02EB0577033F9BE83B06CFE0A30BE30D84A
+//CHKSM=5F1F6E85B55ADB68E519811FE23CE7268A1A3B71

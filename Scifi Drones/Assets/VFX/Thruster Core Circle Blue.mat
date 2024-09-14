@@ -137,6 +137,8 @@ Material:
     - _RingWobbleOverlayOffset: 0
     - _RingWobbleOverlayStrength: 0.571
     - _RingWobbleSpeed: 0.279
+    - _RingWobbleSpeedTexX: 0
+    - _RingWobbleSpeedTexY: 0
     - _RingWobbleStrength: 0.184
     - _ShowMaster: 0.54691905
     - _ShowMaster1: 1
@@ -165,5 +167,8 @@ Material:
     - _RingTexFixedOffset: {r: 0, g: 0, b: 0, a: 0}
     - _RingTexValueRemap: {r: -0.53, g: 0.5, b: 0, a: 0}
     - _SquareMainTexTiling: {r: 3, g: 1, b: 0, a: 0}
+    - _TextureColorEnd: {r: 0, g: 5.367789, b: 137.81917, a: 0.8901961}
+    - _TextureColorStart: {r: 0.08247059, g: 0.007048766, b: 0.18679245, a: 1}
+    - _WobbleRange: {r: 0, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

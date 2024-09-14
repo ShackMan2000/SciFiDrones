@@ -1,0 +1,10 @@
+# ninja log v5
+9	3011	7479133503261145	GameActivity/CMakeFiles/game.dir/UGAConfiguration.cpp.o	85594787b3c2baa4
+37	3021	7479133504205791	GameActivity/CMakeFiles/game.dir/UGAInputKeyEvent.cpp.o	f09b52eee533c0f3
+52	3024	7479133504875409	GameActivity/CMakeFiles/game.dir/UGASoftKeyboard.cpp.o	d38815b93851eb98
+23	3025	7479133504850375	GameActivity/CMakeFiles/game.dir/UGAEntry.cpp.o	8b829d6a44a04344
+1	3286	7479133507318232	GameActivity/CMakeFiles/game.dir/UGADebug.cpp.o	8c6a1edc54c55336
+44	3339	7479133508308658	GameActivity/CMakeFiles/game.dir/UGAInputMotionEvent.cpp.o	792eddabe334646a
+30	3580	7479133510691331	GameActivity/CMakeFiles/game.dir/UGAInput.cpp.o	57d2f21c8200b554
+16	3982	7479133514712852	GameActivity/CMakeFiles/game.dir/UGAApplication.cpp.o	19fb7701379988a1
+3983	4175	7479133516628773	C:/Unity/SciFiDrones/Scifi Drones/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/build/intermediates/cxx/RelWithDebInfo/464j506g/obj/arm64-v8a/libgame.so	e637ed8a5cc28d41

@@ -89,10 +89,10 @@ Material:
     - _BackTexColorRangeOverlayOffset: 0.084
     - _BackTexColorRangeOverlayStrength: 4.07
     - _BackTexFixedRotation: 0
-    - _BackTexMoveToCenterSpeed: 0.57
+    - _BackTexMoveToCenterSpeed: -0.48
     - _BackTexRotate: 1
-    - _BackTexRotationSpeed: 9.73
-    - _BackTexScale: 1
+    - _BackTexRotationSpeed: 0
+    - _BackTexScale: 2
     - _Color_1_Start: 0.034
     - _Color_2_End: 0.816
     - _Color_2_Start: 0
