@@ -167,7 +167,7 @@ Material:
     - _RingTexFixedOffset: {r: 0, g: 0, b: 0, a: 0}
     - _RingTexValueRemap: {r: -0.53, g: 0.5, b: 0, a: 0}
     - _SquareMainTexTiling: {r: 3, g: 1, b: 0, a: 0}
-    - _TextureColorA: {r: 0, g: 0.25303277, b: 0.7698112, a: 0}
-    - _TextureColorB: {r: 0, g: 0.24946389, b: 12.316978, a: 0.47843137}
+    - _TextureColorA: {r: 3.0792453, g: 0.6397099, b: 0, a: 0}
+    - _TextureColorB: {r: 24.633957, g: 2.9796731, b: 0, a: 0.47843137}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

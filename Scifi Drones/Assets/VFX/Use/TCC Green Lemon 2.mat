@@ -111,8 +111,8 @@ Material:
     - _DynamicBackTecRotationSpeed: 1
     - _Float0: 0.2
     - _Float1: 0
-    - _GradientColorEndRadius: 0.782
-    - _GradientColorStartRadius: 0.505
+    - _GradientColorEndRadius: 0.774
+    - _GradientColorStartRadius: 0.512
     - _Int0: 0
     - _QueueControl: 0
     - _QueueOffset: 0
@@ -143,14 +143,14 @@ Material:
     - _RingSwingExtraWobble: 1
     - _RingSwingSpeed: 1
     - _RingSwingStrength: 1
-    - _RingTexRotation: 7.36
+    - _RingTexRotation: 5.96
     - _RingTexScale: 1
     - _RingWobbleOverlayFrequency: 1.09
     - _RingWobbleOverlayOffset: 0
     - _RingWobbleOverlayStrength: 1.274
     - _RingWobbleSpeed: 0.279
-    - _RingWobbleSpeedTexX: 0.33
-    - _RingWobbleSpeedTexY: 0.31
+    - _RingWobbleSpeedTexX: 0.82
+    - _RingWobbleSpeedTexY: -0.41
     - _RingWobbleStrength: 1
     - _ShowMaster: 0.154
     - _ShowMaster1: 1
@@ -176,8 +176,8 @@ Material:
     - _Color_1: {r: 0, g: 0, b: 0, a: 0}
     - _Color_2: {r: 0.062418763, g: 1.2018834, b: 0, a: 0}
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
-    - _GradientInnerColor: {r: 0, g: 0.6285994, b: 5.992157, a: 0.15294118}
-    - _GradientOuterColor: {r: 0, g: 0.7529398, b: 11.984314, a: 1}
+    - _GradientInnerColor: {r: 1.4980392, g: 0.38744158, b: 0, a: 0}
+    - _GradientOuterColor: {r: 41.73181, g: 0.39279544, b: 0, a: 1}
     - _InnerColor: {r: 0, g: 0, b: 0, a: 0}
     - _MainGradientInside: {r: 0, g: 0, b: 0, a: 0}
     - _MainGradientOutside: {r: 0, g: 0, b: 0, a: 0}
@@ -187,8 +187,8 @@ Material:
     - _RingTexFixedOffset: {r: 0, g: 0, b: 0, a: 0}
     - _RingTexValueRemap: {r: 0.2, g: 1.48, b: 0, a: 0}
     - _SquareMainTexTiling: {r: 3, g: 1, b: 0, a: 0}
-    - _TextureColorA: {r: 0, g: 1.4378535, b: 13.76636, a: 0}
-    - _TextureColorB: {r: 0, g: 3.8024445, b: 32, a: 0}
+    - _TextureColorA: {r: 47.937256, g: 12.973249, b: 0, a: 0}
+    - _TextureColorB: {r: 31.999996, g: 2.3557289, b: 0, a: 0}
     - _TextureColorEnd: {r: 0.189962, g: 14.148496, b: 0, a: 0.65882355}
     - _TextureColorStart: {r: 0, g: 0.5019608, b: 0.097585045, a: 0}
     - _WobbleRange: {r: -0.35, g: 0.36, b: 0, a: 0}
