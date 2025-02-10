@@ -58,19 +58,19 @@ Material:
     - _AlphaCutoff: 0.5
     - _EnvironmentReflections: 1
     - _Float0: 1
-    - _H: 0
+    - _H: 0.013
     - _Metallic: 0.701
     - _QueueControl: 0
     - _QueueOffset: 0
     - _ReceiveShadows: 0
-    - _S: 0.056
+    - _S: -0.566
     - _Smoothness: 0
     - _Smoothness1: 0
     - _SpecularHighlights: 1
-    - _V: 0.059
+    - _V: -0.007
     m_Colors:
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
-    - _RemapMetallicMap: {r: 0.4, g: 2.76, b: 0, a: 0}
-    - _RemapSmoothness: {r: 0.61, g: 0.95, b: 0, a: 0}
+    - _RemapMetallicMap: {r: 0.48, g: 2.29, b: 0, a: 0}
+    - _RemapSmoothness: {r: 0.24, g: -0.01, b: 0, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

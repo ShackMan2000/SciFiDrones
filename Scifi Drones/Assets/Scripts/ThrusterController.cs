@@ -7,11 +7,11 @@ using UnityEngine;
 public class ThrusterController : MonoBehaviour
 {
     // 2 guiding principles
-    // It should look cool and feel responsive -> thrusters should move immediatly and maybe some extra feedback for sharp value changes
+    // It should look cool and feel responsive -> thrusters should move immediatly and maybe some extra VFX for sharp value changes
     // even if that doesn't make sense, e.g. change the side movement drastically could just add some extra sparks
-    // Take every short cut you can
+    // Take short cuts, iterate instead!
 
-    public List<Thruster> allThrusters => new List<Thruster>(leftThrusters.Concat(rightThrusters));
+    List<Thruster> allThrusters => new List<Thruster>(leftThrusters.Concat(rightThrusters));
     public List<Thruster> leftThrusters;
     public List<Thruster> rightThrusters;
 
@@ -24,15 +24,10 @@ public class ThrusterController : MonoBehaviour
 
     [SerializeField] float yawMaxFlapRotation;
     [SerializeField] float yawRingRotation;
-
-    // going through the drone movement instead of getting the input right away
-    // in case the thrusters should be adjusted based on input in relation to current movement
+    
     [SerializeField] DroneMovement droneMovement;
 
-    // input controller
-    // take the current input and use that as a target
-    // one curve for increasing speed
-    // maybe a second one for decreasing, but do that later
+
 
     // that will be the value that determines the pitch too, so it's delayed
     // while the thrusters react immediatly to the input and use the difference to the drone movement
@@ -44,14 +39,14 @@ public class ThrusterController : MonoBehaviour
     {
         droneMovement.OnForwardTargetChanged += SetForwardMovement;
         droneMovement.OnSidewaysTargetChanged += SetSideMovement;
-        droneMovement.OnYawTargetChanged += SetRotationForYaw;
+      //  droneMovement.OnYawTargetChanged += SetRotationForYaw;
     }
 
     void OnDisable()
     {
         droneMovement.OnForwardTargetChanged -= SetForwardMovement;
         droneMovement.OnSidewaysTargetChanged -= SetSideMovement;
-        droneMovement.OnYawTargetChanged -= SetRotationForYaw;
+        //droneMovement.OnYawTargetChanged -= SetRotationForYaw;
     }
 
 
@@ -114,26 +109,9 @@ public class ThrusterController : MonoBehaviour
     }
 
 
-    // for forward movement it might look more interesting if the drone pitches
-    // maybe this could be speed dependent and a step towards the high speed mode:
-    // at slow speeds the drone pitches forward, so it's more like a curve with a small bump
-    // and then when reaching higher and higher speeds it actually becomes less
-    // so the thrusters are also capped in their forward rotation until reaching those higher speeds.
-    // and maybe for backwards just cap it at max pitch. Like just set a number e.g. 0.3 of the forward curve
-    // and that's it.
-
-
-    // e.g. the input says move to the side but the drone is not tilted like that:
-    // so the thrusters move immediatly
-    // 
-
-
     public float forwardMaxRotation;
     public float sideMaxRotation;
 
-
-    // use a hierarchy: Rotating around the own axis reserves front and crossed to the back
-    // side to side can steal a bit of the forward rotation
 
     [Range(0, 1)]
     public float forwardCapWhenLateralMovement;

@@ -186,6 +186,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c311a20eb2224ca98804cc6114826bdd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  IsLockedForYaw: 0
   Flapper: {fileID: 2328092706825139653}
   Ring: {fileID: 2569977767706712391}
 --- !u!1 &3584055007551554152
@@ -688,7 +689,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a1a499c325d6f1543a92ae953a849912, type: 2}
+  - {fileID: -167906427434553992, guid: c0c7ef5aca7d2434bbda3de80d5c3ea9, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

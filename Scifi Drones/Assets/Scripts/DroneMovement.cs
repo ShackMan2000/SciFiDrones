@@ -3,46 +3,47 @@ using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 
 public class DroneMovement : MonoBehaviour
 {
-    [SerializeField] float maxForwardSpeed;
-    [SerializeField] float maxForwardPitch;
     
-    [SerializeField] float maxSidewaysSpeed;
+    [BoxGroup("Movement")] [SerializeField] float maxForwardSpeed;
+    [BoxGroup("Movement")] [SerializeField] float maxSidewaysSpeed;
+    [BoxGroup("Movement")] [SerializeField] float maxYawSpeed;
+    [BoxGroup("Movement")] [SerializeField] float maxVerticalSpeed;
+
     [SerializeField] float maxSidewaysRoll;
-    
-    [SerializeField] float maxYawSpeed;
-    
+    [SerializeField] float maxForwardPitch;
     [SerializeField] float timeToReachTarget = 1f;
     //  [SerializeField] AnimationCurve reachTargetCurve;
 
 
-    [SerializeField] Transform gravityCenter;
+    [SerializeField] Transform pitchAndRollCenter;
+    [SerializeField] Transform yawCenter;
 
-    public float forwardMovement;
-    public float sidewaysMovement;
+    public float pitchChange;
 
-
-    float forwardTarget;
+    float pitchTarget;
     float sidewaysTarget;
     float yawTarget;
+    float verticalTarget;
 
 
     public event Action<float> OnForwardTargetChanged = delegate { };
     public event Action<float> OnSidewaysTargetChanged = delegate { };
     public event Action<float> OnYawTargetChanged = delegate { };
 
-    
+
     [Button]
     public void SetForwardTarget(float newTarget)
     {
-        forwardTarget = newTarget;
+        pitchTarget = newTarget * maxForwardPitch;
         OnForwardTargetChanged?.Invoke(newTarget);
     }
 
-    
+
     [Button]
     public void SetSidewaysTarget(float sideInput)
     {
@@ -56,34 +57,62 @@ public class DroneMovement : MonoBehaviour
         yawTarget = yawInput;
         OnYawTargetChanged?.Invoke(yawInput);
     }
+
+
+    public void SetVerticalTarget(float verticalInput)
+    {
+        verticalTarget = verticalInput;
+    }
     
-    
+
+    float currentPitch;
+    float currentRoll;
+
     
     void Update()
     {
-        forwardMovement = Mathf.Lerp(forwardMovement, forwardTarget, Time.deltaTime / timeToReachTarget);
-        sidewaysMovement = Mathf.Lerp(sidewaysMovement, sidewaysTarget, Time.deltaTime / timeToReachTarget);
-        
-        
-        //transform.position += transform.forward * currentValue * maxForwardSpeed * Time.deltaTime;
-        
-        float yRotation = gravityCenter.localRotation.eulerAngles.y + yawTarget * maxYawSpeed * Time.deltaTime;
-        //yRotation +=
-        
-       gravityCenter.localRotation = Quaternion.Euler(forwardMovement * maxForwardPitch, yRotation , sidewaysMovement * maxSidewaysRoll);
-        
-        //gravityCenter.Rotate(Vector3.up, yawTarget * maxYawSpeed * Time.deltaTime, Space.World  );
-        // for forward we can just rotate the thrusters directly, no real need for a difference, polish later
+
+        currentPitch = Mathf.Lerp(currentPitch, pitchTarget, Time.deltaTime / timeToReachTarget);
+
+        currentPitch += pitchChange;
+
+        currentRoll = Mathf.Lerp(currentRoll, sidewaysTarget * maxSidewaysRoll, Time.deltaTime / timeToReachTarget);
+        pitchAndRollCenter.transform.localRotation = Quaternion.Euler(new Vector3(currentPitch, 0, currentRoll));
+
+
+        Move();
     }
 
+    float currentForwardSpeed;
+    float currentSidewaysSpeed;
+    float currentYawSpeed;
+    
 
-// [ContextMenu("toggle the unknown")]
-//     void yhyhjhjmh()
-//     {
-//         if (Input.GetKeyDown(KeyCode.Space))
-//         {
-//             shitIsOn = !shitIsOn;
-//             OVRManager.eyeFovPremultipliedAlphaModeEnabled = shitIsOn;
-//         }
-//     }
+    
+    
+    [SerializeField] float timeToReachSpeedTarget = 1f;
+    
+    // don't get stuck here, doesn't matter! Just do something and try it out
+    void Move()
+    {
+        
+        float forwardSpeedTarget = currentPitch * maxForwardSpeed;
+        
+        currentForwardSpeed = Mathf.Lerp(currentForwardSpeed, forwardSpeedTarget, Time.deltaTime / timeToReachSpeedTarget);
+        
+        
+        float sidewaysSpeedTarget = currentRoll * maxSidewaysSpeed;
+         currentSidewaysSpeed = Mathf.Lerp(currentSidewaysSpeed, sidewaysSpeedTarget, Time.deltaTime / timeToReachSpeedTarget);
+        
+         
+         
+         Vector3 movement = yawCenter.forward * currentForwardSpeed + pitchAndRollCenter.right * currentSidewaysSpeed;
+         yawCenter.position += movement * Time.deltaTime;
+         
+         float yawSpeedTarget = yawTarget * maxYawSpeed;
+         currentYawSpeed = Mathf.Lerp(currentYawSpeed, yawSpeedTarget, Time.deltaTime / timeToReachSpeedTarget);
+         
+        yawCenter.transform.Rotate(0, currentYawSpeed * Time.deltaTime, 0, Space.Self);
+    }
+
 }
