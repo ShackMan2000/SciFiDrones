@@ -1,0 +1,166 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Thruster Purple Stripes
+  m_Shader: {fileID: 4800000, guid: 9c52ace643b542f4896cfd148613c5a6, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords:
+  - _RECEIVE_SHADOWS_OFF
+  m_InvalidKeywords:
+  - _RECEIVESHADOWS_OFF
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _OverDriveTexture:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _RingTexture:
+        m_Texture: {fileID: 2800000, guid: e2195078defa4d54689046f711f1e368, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _RingTexture1:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _WaveNoiseTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _texcoord:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_Lightmaps:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_LightmapsInd:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_ShadowMasks:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _ActiveParticlesCount: -0.6
+    - _AlphaCenterStartRadius: 0.013
+    - _AlphaCutoff: 0.5
+    - _AlphaEdgeEndRadius: 0.511
+    - _AlphaEnd: 0.491
+    - _AlphaInCenter: 0
+    - _AlphaMaskPower: 3.4
+    - _AlphaMid: 0.962
+    - _AlphaMulitEndPosition: 0
+    - _AlphaMulitStartPosition: 0
+    - _AlphaMultiEndFactor: 1
+    - _AlphaMultiEndFactor1: 0
+    - _AlphaMultiEndPosition: 0.711
+    - _AlphaMultiPower: 1.2
+    - _AlphaMultiStartFactor: 0
+    - _AlphaMultiStartPosition: 0.146
+    - _AlphaOnEdge: 1
+    - _AlphaStart: 0
+    - _AphaMultiEndPosition: 0
+    - _C1EndLerp: 0.07
+    - _C1StartLerp: 0
+    - _C2EndLerp: 1
+    - _C2StartLerp: 0.374
+    - _EdgeAlphaBoost: 0.53
+    - _EdgeAlphaBoostOverDrivel: 0.952
+    - _EdgeAlphaBoostPower: 20
+    - _FixedOffsetRotationParticleZone: 0.25
+    - _Float0: 0.62
+    - _Float1: 0.52
+    - _Fusion: 0
+    - _MaxVisibility: 6.4
+    - _MoveCenterDown: 0
+    - _MoveCenterDownPower: 0.9
+    - _MoveCenterDownStart: 1
+    - _OverDrive: 0
+    - _ParticleZoneEdgeBoost: 0.06
+    - _ParticleZoneVisibilityPower: 1.46
+    - _PolarLength: 1.55
+    - _QueueControl: 0
+    - _QueueOffset: 0
+    - _ReceiveShadows: 0
+    - _RemapInnerCenter: 0
+    - _RemapMiddlePart: 0.516
+    - _RemapOuterEdge: 1
+    - _Reveal: 0.46
+    - _RingValueEnd: 1
+    - _RingValueMid: 1
+    - _RingValueStart: 0
+    - _RotateTiledTexture: 0
+    - _RotationParticleZone: 0.4056312
+    - _RotationSpeed: -0.36
+    - _Scale: 1
+    - _ScaleInnerCenter: 0
+    - _ScaleInnerCenter1: 0
+    - _ScaleMainTex: 1
+    - _ScaleMiddlePart: 1.75
+    - _ScaleMiddlePart1: 1.83
+    - _ScaleOuterEdge: 1.73
+    - _ScaleOuterEdge1: 1.06
+    - _StartVisibility: 0
+    - _TexCircularSpeed: 24
+    - _TexRadialSpeed: 3.1
+    - _TextureScale: 1.24
+    - _UsePolarCoordinates: -0.02
+    - _ValueAddCenter: 0
+    - _ValueAddEdge: 0
+    - _ValueAddPower: 27.1
+    - _ValueMulitPower: 0.6
+    - _ValueMultiEndFactor: 1
+    - _ValueMultiEndPosition: 0.589
+    - _ValueMultiStartFactor: 5
+    - _ValueMultiStartPosition: 0.158
+    - _VerticalOffsetStrengthAtOneDistance: 0.18
+    - _VisibilityAlphaBoost: 0.413
+    - _VisibilityAlphaBoostOverDrivel: 0
+    - _VisibilityAlphaBoostPower: 8.15
+    - _VisibilityPower: 10
+    - _VisibilityPowerp: 3.88
+    - _VisibilityPowerp1: 0.04
+    - _WaveHeighWorld: 0.64
+    - _WaveHeight: 0.632
+    - _WaveHeightWorld: 0.211
+    - _WaveNoiseSpeed: 0
+    - _WaveNoiseStrength: 0
+    - _WaveOffsetPerObject: 4.6
+    - _WaveStrengthCenter: 0.29
+    - _WaveStrengthChangePower: 2.89
+    - _WaveStrengthEdge: 0
+    - _Waves: 2.97
+    - _WavesRotationSpeed: 1
+    - _WavesRotationsPerSec: 2
+    m_Colors:
+    - _AlphaRemap: {r: 0, g: 1, b: 0, a: 0}
+    - _BrightColor: {r: 0, g: 0.2232968, b: 7.4902005, a: 1}
+    - _BrightColorOverDrive: {r: 19.079245, g: 0, b: 0.249577, a: 0}
+    - _Color1: {r: 0, g: 0, b: 0, a: 0}
+    - _Color2: {r: 0.019607825, g: 0.101231985, b: 0.78431374, a: 0.4862745}
+    - _Color3: {r: 0.119651645, g: 0.1765512, b: 1.5235648, a: 1}
+    - _DarkColor: {r: 0, g: 0.3211808, b: 1.3632324, a: 1}
+    - _DarkColorOverdrive: {r: 353.56992, g: 0, b: 2.1047432, a: 0}
+    - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
+    - _OverDriveColor: {r: 0, g: 0, b: 0, a: 0}
+    - _WaveColor: {r: 0, g: 19.506922, b: 60.379143, a: 0}
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1

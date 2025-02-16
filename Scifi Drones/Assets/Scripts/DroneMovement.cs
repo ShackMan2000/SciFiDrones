@@ -81,30 +81,22 @@ public class DroneMovement : MonoBehaviour
 
     void Update()
     {
-        // the problem here is that the closer we get to the target, the less we move towards it
-        // which is fine for acceleration
-        // but if the target is 0, we shouldn't lerp from e.g. 0.02 to 0
-        // and in th next frame 0.01 to 0
-        // we could also do an extra method that if the target is 0, we reduce the speed by some linear amount
+        SetPitch();
 
+        SetRoll();
 
-        currentPitch = Mathf.Lerp(currentPitch, pitchTarget, Time.deltaTime / timeToReachTarget);
+        pitchAndRollCenter.transform.localRotation = Quaternion.Euler(new Vector3(currentPitch, 0, currentRoll * -1f));
 
-        if (Mathf.Abs(pitchTarget) < 0.01f)
-        {
-            float forcedInertiaPerSecond = maxForwardPitch / forcedInertiaInSeconds;
-            float forcedInertiaThisFrame = forcedInertiaPerSecond * Time.deltaTime;
+        Move();
+    }
 
-            if (currentPitch > 0)
-            {
-                currentPitch = Mathf.Max(0, currentPitch - forcedInertiaThisFrame);
-            }
-            else if (currentPitch < 0)
-            {
-                currentPitch = Mathf.Min(0, currentPitch + forcedInertiaThisFrame);
-            }
-        }
-
+    
+    
+    // by lerping from the current value (and not a fixed start value), we move faster towards the target the further we are away from it
+    // which also means that if we're really close, it becomes very hard to reach
+    // therefore a bit of intertia is added to get rid of those tiny movements in the end
+    void SetRoll()
+    {
         currentRoll = Mathf.Lerp(currentRoll, sidewaysTarget * maxSidewaysRoll, Time.deltaTime / timeToReachTarget);
 
         if (Mathf.Abs(sidewaysTarget) < 0.01f)
@@ -121,11 +113,26 @@ public class DroneMovement : MonoBehaviour
                 currentRoll = Mathf.Min(0, currentRoll + forcedInertiaThisFrame);
             }
         }
+    }
 
+    void SetPitch()
+    {
+        currentPitch = Mathf.Lerp(currentPitch, pitchTarget, Time.deltaTime / timeToReachTarget);
 
-        pitchAndRollCenter.transform.localRotation = Quaternion.Euler(new Vector3(currentPitch, 0, currentRoll * -1f));
+        if (Mathf.Abs(pitchTarget) < 0.01f)
+        {
+            float forcedInertiaPerSecond = maxForwardPitch / forcedInertiaInSeconds;
+            float forcedInertiaThisFrame = forcedInertiaPerSecond * Time.deltaTime;
 
-        Move();
+            if (currentPitch > 0)
+            {
+                currentPitch = Mathf.Max(0, currentPitch - forcedInertiaThisFrame);
+            }
+            else if (currentPitch < 0)
+            {
+                currentPitch = Mathf.Min(0, currentPitch + forcedInertiaThisFrame);
+            }
+        }
     }
 
 
@@ -137,20 +144,18 @@ public class DroneMovement : MonoBehaviour
         }
 
         float forwardSpeedTarget = currentPitch * maxForwardSpeed;
-
         currentForwardSpeed = Mathf.Lerp(currentForwardSpeed, forwardSpeedTarget, Time.deltaTime / timeToReachSpeedTarget);
-
 
         float sidewaysSpeedTarget = currentRoll * maxSidewaysSpeed;
         currentSidewaysSpeed = Mathf.Lerp(currentSidewaysSpeed, sidewaysSpeedTarget, Time.deltaTime / timeToReachSpeedTarget);
 
-
-        Vector3 movement = yawCenter.forward * currentForwardSpeed + pitchAndRollCenter.right * currentSidewaysSpeed;
+        Vector3 movement = yawCenter.forward * currentForwardSpeed + yawCenter.right * currentSidewaysSpeed;
         yawCenter.position += movement * Time.deltaTime;
 
+        
+        
         float yawSpeedTarget = yawTarget * maxYawSpeed;
         currentYawSpeed = Mathf.Lerp(currentYawSpeed, yawSpeedTarget, Time.deltaTime / timeToReachSpeedTarget);
-
         
         if(Mathf.Abs(yawTarget) < 0.01f)
         {

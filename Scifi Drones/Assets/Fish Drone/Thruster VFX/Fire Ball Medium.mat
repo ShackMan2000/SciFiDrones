@@ -65,14 +65,14 @@ Material:
     - _Color2Pure: 0.627
     - _DEBUGShowNoise: 0
     - _DEBUGShowVoronoi: 0
-    - _EndPoint: 2.51
+    - _EndPoint: 2.41
     - _FinalMaskPower: 1
     - _FinalRemapMax: 0.53
     - _FinalRemapMin: -0.12
     - _Float1: 1.64
     - _FrontRoundness: 10
     - _MasterAlpha: 1
-    - _MidPoint: 0.161
+    - _MidPoint: 0.33
     - _NoiseEnd: 1
     - _NoiseMid: 0.134
     - _NoiseScale: 3.87
@@ -80,9 +80,9 @@ Material:
     - _NoiseStart: 0
     - _PixelResolution: 100
     - _Power: 3.64
-    - _Radius: 0.032
+    - _Radius: 0.039
     - _RandomSeed: 439
-    - _StartPoint: -0.01
+    - _StartPoint: -1
     - _TailRoundness: 1.274
     - _TrailWobbleScale: 5.95
     - _TrailWobbleSpeed: 2.82

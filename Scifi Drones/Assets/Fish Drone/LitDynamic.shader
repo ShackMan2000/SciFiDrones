@@ -15,9 +15,10 @@ Shader "LitDynamic"
 		_V("V", Range( -1 , 1)) = 0
 		_RemapMetallicMap("RemapMetallicMap", Vector) = (0,1,0,0)
 		_RemapRoughness("RemapRoughness", Vector) = (0,1,0,0)
-		_BaseColorMultiply("BaseColor Multiply", Color) = (1,1,1)
+		_BaseColorBlend("BaseColor Blend", Color) = (1,1,1)
 		_AmbientOcclusion("AmbientOcclusion", 2D) = "white" {}
 		_AOStrength("AO Strength", Range( 0 , 1)) = 1
+		_BlendStrength("Blend Strength", Range( 0 , 1)) = 0
 		[HideInInspector] _texcoord( "", 2D ) = "white" {}
 
 
@@ -310,12 +311,13 @@ Shader "LitDynamic"
 			float4 _NormalMap_ST;
 			float4 _MetallicTexture_ST;
 			float4 _RoughnessTexture_ST;
-			float3 _BaseColorMultiply;
+			float3 _BaseColorBlend;
 			float2 _RemapMetallicMap;
 			float2 _RemapRoughness;
 			float _H;
 			float _S;
 			float _V;
+			float _BlendStrength;
 			float _AOStrength;
 			#ifdef ASE_TRANSMISSION
 				float _TransmissionShadow;
@@ -578,9 +580,11 @@ Shader "LitDynamic"
 				float2 uv_BaseColor = input.ase_texcoord9.xy * _BaseColor_ST.xy + _BaseColor_ST.zw;
 				float3 hsvTorgb15 = RGBToHSV( tex2D( _BaseColor, uv_BaseColor ).rgb );
 				float3 hsvTorgb23 = HSVToRGB( float3(saturate( ( hsvTorgb15.x + _H ) ),saturate( ( hsvTorgb15.y + _S ) ),saturate( ( hsvTorgb15.z + _V ) )) );
-				float3 temp_output_42_0 = ( hsvTorgb23 * _BaseColorMultiply );
+				float3 blendOpSrc48 = _BaseColorBlend;
+				float3 blendOpDest48 = hsvTorgb23;
+				float3 lerpResult51 = lerp( hsvTorgb23 , ( saturate( ( 1.0 - ( 1.0 - blendOpSrc48 ) * ( 1.0 - blendOpDest48 ) ) )) , _BlendStrength);
 				float2 uv_AmbientOcclusion = input.ase_texcoord9.xy * _AmbientOcclusion_ST.xy + _AmbientOcclusion_ST.zw;
-				float3 lerpResult47 = lerp( temp_output_42_0 , ( temp_output_42_0 * tex2D( _AmbientOcclusion, uv_AmbientOcclusion ).r ) , _AOStrength);
+				float3 lerpResult47 = lerp( lerpResult51 , ( lerpResult51 * tex2D( _AmbientOcclusion, uv_AmbientOcclusion ).r ) , _AOStrength);
 				
 				float2 uv_NormalMap = input.ase_texcoord9.xy * _NormalMap_ST.xy + _NormalMap_ST.zw;
 				
@@ -930,12 +934,13 @@ Shader "LitDynamic"
 			float4 _NormalMap_ST;
 			float4 _MetallicTexture_ST;
 			float4 _RoughnessTexture_ST;
-			float3 _BaseColorMultiply;
+			float3 _BaseColorBlend;
 			float2 _RemapMetallicMap;
 			float2 _RemapRoughness;
 			float _H;
 			float _S;
 			float _V;
+			float _BlendStrength;
 			float _AOStrength;
 			#ifdef ASE_TRANSMISSION
 				float _TransmissionShadow;
@@ -1251,12 +1256,13 @@ Shader "LitDynamic"
 			float4 _NormalMap_ST;
 			float4 _MetallicTexture_ST;
 			float4 _RoughnessTexture_ST;
-			float3 _BaseColorMultiply;
+			float3 _BaseColorBlend;
 			float2 _RemapMetallicMap;
 			float2 _RemapRoughness;
 			float _H;
 			float _S;
 			float _V;
+			float _BlendStrength;
 			float _AOStrength;
 			#ifdef ASE_TRANSMISSION
 				float _TransmissionShadow;
@@ -1537,12 +1543,13 @@ Shader "LitDynamic"
 			float4 _NormalMap_ST;
 			float4 _MetallicTexture_ST;
 			float4 _RoughnessTexture_ST;
-			float3 _BaseColorMultiply;
+			float3 _BaseColorBlend;
 			float2 _RemapMetallicMap;
 			float2 _RemapRoughness;
 			float _H;
 			float _S;
 			float _V;
+			float _BlendStrength;
 			float _AOStrength;
 			#ifdef ASE_TRANSMISSION
 				float _TransmissionShadow;
@@ -1759,9 +1766,11 @@ Shader "LitDynamic"
 				float2 uv_BaseColor = input.ase_texcoord4.xy * _BaseColor_ST.xy + _BaseColor_ST.zw;
 				float3 hsvTorgb15 = RGBToHSV( tex2D( _BaseColor, uv_BaseColor ).rgb );
 				float3 hsvTorgb23 = HSVToRGB( float3(saturate( ( hsvTorgb15.x + _H ) ),saturate( ( hsvTorgb15.y + _S ) ),saturate( ( hsvTorgb15.z + _V ) )) );
-				float3 temp_output_42_0 = ( hsvTorgb23 * _BaseColorMultiply );
+				float3 blendOpSrc48 = _BaseColorBlend;
+				float3 blendOpDest48 = hsvTorgb23;
+				float3 lerpResult51 = lerp( hsvTorgb23 , ( saturate( ( 1.0 - ( 1.0 - blendOpSrc48 ) * ( 1.0 - blendOpDest48 ) ) )) , _BlendStrength);
 				float2 uv_AmbientOcclusion = input.ase_texcoord4.xy * _AmbientOcclusion_ST.xy + _AmbientOcclusion_ST.zw;
-				float3 lerpResult47 = lerp( temp_output_42_0 , ( temp_output_42_0 * tex2D( _AmbientOcclusion, uv_AmbientOcclusion ).r ) , _AOStrength);
+				float3 lerpResult47 = lerp( lerpResult51 , ( lerpResult51 * tex2D( _AmbientOcclusion, uv_AmbientOcclusion ).r ) , _AOStrength);
 				
 
 				float3 BaseColor = lerpResult47;
@@ -1858,12 +1867,13 @@ Shader "LitDynamic"
 			float4 _NormalMap_ST;
 			float4 _MetallicTexture_ST;
 			float4 _RoughnessTexture_ST;
-			float3 _BaseColorMultiply;
+			float3 _BaseColorBlend;
 			float2 _RemapMetallicMap;
 			float2 _RemapRoughness;
 			float _H;
 			float _S;
 			float _V;
+			float _BlendStrength;
 			float _AOStrength;
 			#ifdef ASE_TRANSMISSION
 				float _TransmissionShadow;
@@ -2061,9 +2071,11 @@ Shader "LitDynamic"
 				float2 uv_BaseColor = input.ase_texcoord2.xy * _BaseColor_ST.xy + _BaseColor_ST.zw;
 				float3 hsvTorgb15 = RGBToHSV( tex2D( _BaseColor, uv_BaseColor ).rgb );
 				float3 hsvTorgb23 = HSVToRGB( float3(saturate( ( hsvTorgb15.x + _H ) ),saturate( ( hsvTorgb15.y + _S ) ),saturate( ( hsvTorgb15.z + _V ) )) );
-				float3 temp_output_42_0 = ( hsvTorgb23 * _BaseColorMultiply );
+				float3 blendOpSrc48 = _BaseColorBlend;
+				float3 blendOpDest48 = hsvTorgb23;
+				float3 lerpResult51 = lerp( hsvTorgb23 , ( saturate( ( 1.0 - ( 1.0 - blendOpSrc48 ) * ( 1.0 - blendOpDest48 ) ) )) , _BlendStrength);
 				float2 uv_AmbientOcclusion = input.ase_texcoord2.xy * _AmbientOcclusion_ST.xy + _AmbientOcclusion_ST.zw;
-				float3 lerpResult47 = lerp( temp_output_42_0 , ( temp_output_42_0 * tex2D( _AmbientOcclusion, uv_AmbientOcclusion ).r ) , _AOStrength);
+				float3 lerpResult47 = lerp( lerpResult51 , ( lerpResult51 * tex2D( _AmbientOcclusion, uv_AmbientOcclusion ).r ) , _AOStrength);
 				
 
 				float3 BaseColor = lerpResult47;
@@ -2173,12 +2185,13 @@ Shader "LitDynamic"
 			float4 _NormalMap_ST;
 			float4 _MetallicTexture_ST;
 			float4 _RoughnessTexture_ST;
-			float3 _BaseColorMultiply;
+			float3 _BaseColorBlend;
 			float2 _RemapMetallicMap;
 			float2 _RemapRoughness;
 			float _H;
 			float _S;
 			float _V;
+			float _BlendStrength;
 			float _AOStrength;
 			#ifdef ASE_TRANSMISSION
 				float _TransmissionShadow;
@@ -2560,12 +2573,13 @@ Shader "LitDynamic"
 			float4 _NormalMap_ST;
 			float4 _MetallicTexture_ST;
 			float4 _RoughnessTexture_ST;
-			float3 _BaseColorMultiply;
+			float3 _BaseColorBlend;
 			float2 _RemapMetallicMap;
 			float2 _RemapRoughness;
 			float _H;
 			float _S;
 			float _V;
+			float _BlendStrength;
 			float _AOStrength;
 			#ifdef ASE_TRANSMISSION
 				float _TransmissionShadow;
@@ -2823,9 +2837,11 @@ Shader "LitDynamic"
 				float2 uv_BaseColor = input.ase_texcoord9.xy * _BaseColor_ST.xy + _BaseColor_ST.zw;
 				float3 hsvTorgb15 = RGBToHSV( tex2D( _BaseColor, uv_BaseColor ).rgb );
 				float3 hsvTorgb23 = HSVToRGB( float3(saturate( ( hsvTorgb15.x + _H ) ),saturate( ( hsvTorgb15.y + _S ) ),saturate( ( hsvTorgb15.z + _V ) )) );
-				float3 temp_output_42_0 = ( hsvTorgb23 * _BaseColorMultiply );
+				float3 blendOpSrc48 = _BaseColorBlend;
+				float3 blendOpDest48 = hsvTorgb23;
+				float3 lerpResult51 = lerp( hsvTorgb23 , ( saturate( ( 1.0 - ( 1.0 - blendOpSrc48 ) * ( 1.0 - blendOpDest48 ) ) )) , _BlendStrength);
 				float2 uv_AmbientOcclusion = input.ase_texcoord9.xy * _AmbientOcclusion_ST.xy + _AmbientOcclusion_ST.zw;
-				float3 lerpResult47 = lerp( temp_output_42_0 , ( temp_output_42_0 * tex2D( _AmbientOcclusion, uv_AmbientOcclusion ).r ) , _AOStrength);
+				float3 lerpResult47 = lerp( lerpResult51 , ( lerpResult51 * tex2D( _AmbientOcclusion, uv_AmbientOcclusion ).r ) , _AOStrength);
 				
 				float2 uv_NormalMap = input.ase_texcoord9.xy * _NormalMap_ST.xy + _NormalMap_ST.zw;
 				
@@ -3020,12 +3036,13 @@ Shader "LitDynamic"
 			float4 _NormalMap_ST;
 			float4 _MetallicTexture_ST;
 			float4 _RoughnessTexture_ST;
-			float3 _BaseColorMultiply;
+			float3 _BaseColorBlend;
 			float2 _RemapMetallicMap;
 			float2 _RemapRoughness;
 			float _H;
 			float _S;
 			float _V;
+			float _BlendStrength;
 			float _AOStrength;
 			#ifdef ASE_TRANSMISSION
 				float _TransmissionShadow;
@@ -3277,12 +3294,13 @@ Shader "LitDynamic"
 			float4 _NormalMap_ST;
 			float4 _MetallicTexture_ST;
 			float4 _RoughnessTexture_ST;
-			float3 _BaseColorMultiply;
+			float3 _BaseColorBlend;
 			float2 _RemapMetallicMap;
 			float2 _RemapRoughness;
 			float _H;
 			float _S;
 			float _V;
+			float _BlendStrength;
 			float _AOStrength;
 			#ifdef ASE_TRANSMISSION
 				float _TransmissionShadow;
@@ -3543,12 +3561,13 @@ Shader "LitDynamic"
 			float4 _NormalMap_ST;
 			float4 _MetallicTexture_ST;
 			float4 _RoughnessTexture_ST;
-			float3 _BaseColorMultiply;
+			float3 _BaseColorBlend;
 			float2 _RemapMetallicMap;
 			float2 _RemapRoughness;
 			float _H;
 			float _S;
 			float _V;
+			float _BlendStrength;
 			float _AOStrength;
 			#ifdef ASE_TRANSMISSION
 				float _TransmissionShadow;
@@ -3689,7 +3708,6 @@ Node;AmplifyShaderEditor.SaturateNode;32;-128,-448;Inherit;False;1;0;FLOAT;0;Fal
 Node;AmplifyShaderEditor.RangedFloatNode;18;-896,-272;Inherit;False;Property;_V;V;6;0;Create;True;0;0;0;False;0;False;0;0;-1;1;0;1;FLOAT;0
 Node;AmplifyShaderEditor.SimpleAddOpNode;21;-368,-288;Inherit;False;2;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
 Node;AmplifyShaderEditor.SaturateNode;33;-144,-352;Inherit;False;1;0;FLOAT;0;False;1;FLOAT;0
-Node;AmplifyShaderEditor.ColorNode;43;-64,-288;Inherit;False;Property;_BaseColorMultiply;BaseColor Multiply;11;0;Create;True;0;0;0;False;0;False;1,1,1,0;0,0,0,0;True;False;0;6;FLOAT3;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4;FLOAT3;5
 Node;AmplifyShaderEditor.Vector2Node;25;-880,-64;Inherit;False;Property;_RemapMetallicMap;RemapMetallicMap;7;0;Create;True;0;0;0;False;0;False;0,1;0,0;0;3;FLOAT2;0;FLOAT;1;FLOAT;2
 Node;AmplifyShaderEditor.RangedFloatNode;35;-1216,544;Inherit;False;Property;_Metallic;Metallic;10;0;Create;True;0;0;0;False;0;False;0;0;0;1;0;1;FLOAT;0
 Node;AmplifyShaderEditor.OneMinusNode;41;-688,256;Inherit;False;1;0;FLOAT;0;False;1;FLOAT;0
@@ -3698,12 +3716,15 @@ Node;AmplifyShaderEditor.SamplerNode;13;-1232,-176;Inherit;True;Property;_Metall
 Node;AmplifyShaderEditor.SimpleAddOpNode;36;96,128;Inherit;False;2;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
 Node;AmplifyShaderEditor.SaturateNode;26;96,-16;Inherit;False;1;0;FLOAT;0;False;1;FLOAT;0
 Node;AmplifyShaderEditor.TFHCRemapNode;24;-160,-16;Inherit;False;5;0;FLOAT;0;False;1;FLOAT;0;False;2;FLOAT;1;False;3;FLOAT;0;False;4;FLOAT;1;False;1;FLOAT;0
-Node;AmplifyShaderEditor.SamplerNode;44;272,48;Inherit;True;Property;_AmbientOcclusion;AmbientOcclusion;12;0;Create;True;0;0;0;False;0;False;-1;None;None;True;0;False;white;Auto;False;Object;-1;Auto;Texture2D;8;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;6;FLOAT;0;False;7;SAMPLERSTATE;;False;6;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4;FLOAT3;5
-Node;AmplifyShaderEditor.LerpOp;47;1152,-336;Inherit;False;3;0;FLOAT3;0,0,0;False;1;FLOAT3;0,0,0;False;2;FLOAT;0;False;1;FLOAT3;0
-Node;AmplifyShaderEditor.RangedFloatNode;45;256,-176;Inherit;False;Property;_AOStrength;AO Strength;13;0;Create;True;0;0;0;False;0;False;1;0;0;1;0;1;FLOAT;0
-Node;AmplifyShaderEditor.SimpleMultiplyOpNode;42;496,-368;Inherit;False;2;2;0;FLOAT3;0,0,0;False;1;FLOAT3;0,0,0;False;1;FLOAT3;0
-Node;AmplifyShaderEditor.SimpleMultiplyOpNode;46;928,-176;Inherit;False;2;2;0;FLOAT3;0,0,0;False;1;FLOAT;0;False;1;FLOAT3;0
 Node;AmplifyShaderEditor.SamplerNode;12;608,304;Inherit;True;Property;_NormalMap;Normal Map;0;1;[Normal];Create;True;0;0;0;False;0;False;-1;5db718a427b361646aa5da77830c8d11;5db718a427b361646aa5da77830c8d11;True;0;True;white;Auto;True;Object;-1;Auto;Texture2D;8;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;6;FLOAT;0;False;7;SAMPLERSTATE;;False;6;FLOAT3;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4;FLOAT3;5
+Node;AmplifyShaderEditor.SamplerNode;44;208,-192;Inherit;True;Property;_AmbientOcclusion;AmbientOcclusion;12;0;Create;True;0;0;0;False;0;False;-1;None;None;True;0;False;white;Auto;False;Object;-1;Auto;Texture2D;8;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;6;FLOAT;0;False;7;SAMPLERSTATE;;False;6;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4;FLOAT3;5
+Node;AmplifyShaderEditor.RangedFloatNode;45;608,-32;Inherit;False;Property;_AOStrength;AO Strength;13;0;Create;True;0;0;0;False;0;False;1;0;0;1;0;1;FLOAT;0
+Node;AmplifyShaderEditor.LerpOp;47;1312,-400;Inherit;False;3;0;FLOAT3;0,0,0;False;1;FLOAT3;0,0,0;False;2;FLOAT;0;False;1;FLOAT3;0
+Node;AmplifyShaderEditor.SimpleMultiplyOpNode;46;1008,-336;Inherit;False;2;2;0;FLOAT3;0,0,0;False;1;FLOAT;0;False;1;FLOAT3;0
+Node;AmplifyShaderEditor.ColorNode;49;320,-864;Inherit;False;Property;_BaseColorBlend;BaseColor Blend;11;0;Create;True;0;0;0;False;0;False;1,1,1,0;0,0,0,0;True;False;0;6;FLOAT3;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4;FLOAT3;5
+Node;AmplifyShaderEditor.LerpOp;51;816,-544;Inherit;False;3;0;FLOAT3;0,0,0;False;1;FLOAT3;0,0,0;False;2;FLOAT;0;False;1;FLOAT3;0
+Node;AmplifyShaderEditor.RangedFloatNode;50;416,-336;Inherit;False;Property;_BlendStrength;Blend Strength;14;0;Create;True;0;0;0;False;0;False;0;0;0;1;0;1;FLOAT;0
+Node;AmplifyShaderEditor.BlendOpsNode;48;624,-832;Inherit;True;Screen;True;3;0;FLOAT3;0,0,0;False;1;FLOAT3;0,0,0;False;2;FLOAT;1;False;1;FLOAT3;0
 Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;0;0,0;Float;False;False;-1;2;UnityEditor.ShaderGraphLitGUI;0;12;New Amplify Shader;94348b07e5e8bab40bd6c8a1e3df54cd;True;ExtraPrePass;0;0;ExtraPrePass;5;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;True;0;False;;False;False;False;False;False;False;False;False;False;True;False;0;False;;255;False;;255;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;False;True;1;False;;True;3;False;;True;True;0;False;;0;False;;True;4;RenderPipeline=UniversalPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;UniversalMaterialType=Lit;True;5;True;12;all;0;False;True;1;1;False;;0;False;;0;1;False;;0;False;;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;True;True;True;True;True;0;False;;False;False;False;False;False;False;False;True;False;0;False;;255;False;;255;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;False;True;1;False;;True;3;False;;True;True;0;False;;0;False;;True;0;False;False;0;;0;0;Standard;0;False;0
 Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;2;0,0;Float;False;False;-1;2;UnityEditor.ShaderGraphLitGUI;0;12;New Amplify Shader;94348b07e5e8bab40bd6c8a1e3df54cd;True;ShadowCaster;0;2;ShadowCaster;0;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;True;0;False;;False;False;False;False;False;False;False;False;False;True;False;0;False;;255;False;;255;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;False;True;1;False;;True;3;False;;True;True;0;False;;0;False;;True;4;RenderPipeline=UniversalPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;UniversalMaterialType=Lit;True;5;True;12;all;0;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;False;False;True;False;False;False;False;0;False;;False;False;False;False;False;False;False;False;False;True;1;False;;True;3;False;;False;True;1;LightMode=ShadowCaster;False;False;0;;0;0;Standard;0;False;0
 Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;3;0,0;Float;False;False;-1;2;UnityEditor.ShaderGraphLitGUI;0;12;New Amplify Shader;94348b07e5e8bab40bd6c8a1e3df54cd;True;DepthOnly;0;3;DepthOnly;0;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;True;0;False;;False;False;False;False;False;False;False;False;False;True;False;0;False;;255;False;;255;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;False;True;1;False;;True;3;False;;True;True;0;False;;0;False;;True;4;RenderPipeline=UniversalPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;UniversalMaterialType=Lit;True;5;True;12;all;0;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;False;False;True;True;False;False;False;0;False;;False;False;False;False;False;False;False;False;False;True;1;False;;False;False;True;1;LightMode=DepthOnly;False;False;0;;0;0;Standard;0;False;0
@@ -3740,16 +3761,19 @@ WireConnection;26;0;24;0
 WireConnection;24;0;13;1
 WireConnection;24;3;25;1
 WireConnection;24;4;25;2
-WireConnection;47;0;42;0
+WireConnection;47;0;51;0
 WireConnection;47;1;46;0
 WireConnection;47;2;45;0
-WireConnection;42;0;23;0
-WireConnection;42;1;43;0
-WireConnection;46;0;42;0
+WireConnection;46;0;51;0
 WireConnection;46;1;44;1
+WireConnection;51;0;23;0
+WireConnection;51;1;48;0
+WireConnection;51;2;50;0
+WireConnection;48;0;49;0
+WireConnection;48;1;23;0
 WireConnection;1;0;47;0
 WireConnection;1;1;12;0
 WireConnection;1;3;26;0
 WireConnection;1;4;39;0
 ASEEND*/
-//CHKSM=B1545B01AAE83273D923F58AF64062E48F7D206E
+//CHKSM=E3D5566674699F46BB448FD0488D57573A53A4A0

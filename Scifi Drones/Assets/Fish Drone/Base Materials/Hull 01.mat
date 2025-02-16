@@ -129,6 +129,7 @@ Material:
     - _AlphaToMask: 0
     - _Blend: 0
     - _BlendModePreserveSpecular: 1
+    - _BlendStrength: 1
     - _BumpScale: 1
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
@@ -143,7 +144,7 @@ Material:
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
-    - _H: 0
+    - _H: -1
     - _Metallic: 0
     - _Mode: 0
     - _OcclusionStrength: 1
@@ -151,25 +152,28 @@ Material:
     - _QueueControl: 0
     - _QueueOffset: 0
     - _ReceiveShadows: 1
-    - _S: 0
+    - _S: 0.16
     - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
+    - _SoftLightStrength: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _SrcBlendAlpha: 1
     - _Surface: 0
     - _UVSec: 0
-    - _V: 0
+    - _V: -0
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 0.47681457, g: 0.5925228, b: 0.7522781, a: 1}
+    - _BaseColorBlend: {r: 0.19496846, g: 0, b: 0.06340051, a: 1}
     - _BaseColorMultiply: {r: 1, g: 1, b: 1, a: 1}
+    - _BaseColorMultiply1: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 0.47681457, g: 0.59252274, b: 0.7522781, a: 1}
     - _Color0: {r: 0.0727762, g: 0.0727762, b: 0.0727762, a: 0}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 0}
-    - _RemapMetallicMap: {r: 0.65, g: 0.92, b: 0, a: 0}
-    - _RemapRoughness: {r: -0.29, g: 0.59, b: 0, a: 0}
+    - _RemapMetallicMap: {r: 0.72, g: 1, b: 0, a: 0}
+    - _RemapRoughness: {r: 0, g: 0.55, b: 0, a: 0}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
